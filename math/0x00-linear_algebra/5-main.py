@@ -2,8 +2,8 @@
 
 add_matrices2D = __import__('5-across_the_planes').add_matrices2D
 
-mat1 = [[1, 2], [3, 4]]
-mat2 = [[5, 6], [7, 8]]
+mat1 = [[1, 2,3], [4, 5, 6]]
+mat2 = [[7,8,9], [10,11,12]]
 print(add_matrices2D(mat1, mat2))
 print(mat1)
 print(mat2)
