@@ -22,6 +22,11 @@ def poly_integral(poly, C=0):
         if not isinstance(element, (int, float)):
             return None
     integrate_list.append(C)
+    integrate_value = 0
     for idx in range(0, len(poly)):
-        integrate_list.append(poly[idx] / (idx + 1))
+        integrate_value = poly[idx] / (idx + 1)
+        if integrate_value % 1 != 0:
+            integrate_list.append(integrate_value)
+        else:
+            integrate_list.append(int(integrate_value))
     return integrate_list
