@@ -30,10 +30,11 @@ grid = plt.GridSpec(3, 2, wspace=0.5, hspace=0.7)
 
 
 plt.subplot(grid[0, 0])
-plt.plot(y0)
+plt.xlim(0, 10)
+plt.plot(y0, 'r-')
 
 plt.subplot(grid[0, 1])
-plt.scatter(x1, y1)
+plt.scatter(x=x1, y=y1, s=7, c='m')
 
 plt.subplot(grid[1, 0])
 plt.xlabel('Time (years)', fontsize='x-small')
@@ -60,5 +61,6 @@ plt.hist(student_grades, edgecolor='black',
          bins=[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
 plt.xlim(0, 100)
 plt.ylim([0, 30])
+plt.xticks(np.arange(0, 110, step=10))
 
 plt.show()

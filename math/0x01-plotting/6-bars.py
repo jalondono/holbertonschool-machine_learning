@@ -5,7 +5,7 @@ from matplotlib import rc
 import pandas as pd
 
 # y-axis in bold
-rc('font', weight='bold')
+rc('font')
 
 # The position of the bars on the x-axis
 r = [0, 1, 2]
@@ -57,8 +57,10 @@ plt.bar(r,
 
 # Custom X axis
 plt.ylim(0, 80)
-plt.xticks(r, names, fontweight='bold')
+plt.ylabel('Quantity of Fruit')
+plt.xticks(r, names)
 plt.legend()
+plt.title('Number of Fruit per Person')
 
 # Show graphic
 plt.show()
