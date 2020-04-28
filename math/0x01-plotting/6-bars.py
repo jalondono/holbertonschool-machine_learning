@@ -11,7 +11,7 @@ rc('font', weight='bold')
 r = [0, 1, 2]
 
 np.random.seed(5)
-fruit = np.random.randint(0, 20, (4,3))
+fruit = np.random.randint(0, 20, (4, 3))
 bottom1 = (fruit[0] + fruit[1])
 bottom2 = (fruit[0] + fruit[1] + fruit[2])
 
@@ -24,13 +24,36 @@ colors = ['red', 'yellow', '#ff8000', '#ffe5b4']
 
 
 # Create brown bars
-plt.bar(r, fruit[0], color=colors[0], edgecolor='white', width=barWidth, label='apples')
+plt.bar(r,
+        fruit[0],
+        color=colors[0],
+        edgecolor='white',
+        width=barWidth,
+        label='apples')
 # Create green bars (middle), on top of the firs ones
-plt.bar(r, fruit[1], bottom=fruit[0], color=colors[1], edgecolor='white', width=barWidth, label='bananas')
+plt.bar(r,
+        fruit[1],
+        bottom=fruit[0],
+        color=colors[1],
+        edgecolor='white',
+        width=barWidth,
+        label='bananas')
 # Create green bars (top)
-plt.bar(r, fruit[2], bottom=bottom1, color=colors[2], edgecolor='white', width=barWidth, label='oranges')
+plt.bar(r,
+        fruit[2],
+        bottom=bottom1,
+        color=colors[2],
+        edgecolor='white',
+        width=barWidth,
+        label='oranges')
 
-plt.bar(r, fruit[3], bottom=bottom2, color=colors[3], edgecolor='white', width=barWidth, label='peaches')
+plt.bar(r,
+        fruit[3],
+        bottom=bottom2,
+        color=colors[3],
+        edgecolor='white',
+        width=barWidth,
+        label='peaches')
 
 # Custom X axis
 plt.ylim(0, 80)

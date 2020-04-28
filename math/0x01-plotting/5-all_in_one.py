@@ -56,7 +56,8 @@ plt.subplot(grid[2, :2])
 plt.xlabel('Grades', fontsize='x-small')
 plt.ylabel('Number of Students', fontsize='x-small')
 plt.title('Project A', fontsize='x-small')
-plt.hist(student_grades, edgecolor='black', bins=[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
+plt.hist(student_grades, edgecolor='black',
+         bins=[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
 plt.xlim(0, 100)
 plt.ylim([0, 30])
 
