@@ -34,6 +34,10 @@ class Poisson:
     def cdf(self, k):
         """Calculates the value of the CDF for a given number of “successes”"""
         sumatory = 0
+        if not isinstance(k, int):
+            k = int(k)
+        if k < 0:
+            return 0
         for idx in range(k + 1):
             sumatory += self.pmf(idx)
         return sumatory
