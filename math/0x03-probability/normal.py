@@ -16,10 +16,10 @@ class Normal:
             summatory = 0
             for elem in data:
                 summatory += (elem - self.mean) ** 2
-            self.stddev = float((summatory / len(data)) ** 0.5)
+            self.stddev = (summatory / len(data)) ** 0.5
 
         else:
-            if stddev < 0:
+            if stddev <= 0:
                 raise ValueError('stddev must be a positive value')
             self.stddev = float(stddev)
             self.mean = float(mean)
