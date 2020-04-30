@@ -22,11 +22,11 @@ class Poisson:
         """Calculates the value of the PMF for a given number of successes"""
         e = 2.7182818285
         if not isinstance(k, int):
-            int(k)
+            k = int(k)
         if k < 0:
             return 0
         factorial = 1
         for idx in range(1, k + 1):
-            factorial = factorial *idx
+            factorial = factorial * idx
         pmf_val = (e**(-self.lambtha) * (self.lambtha**k)) / factorial
         return pmf_val
