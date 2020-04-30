@@ -6,7 +6,7 @@ Exponential = __import__('exponential').Exponential
 np.random.seed(0)
 data = np.random.exponential(0.5, 100).tolist()
 e1 = Exponential(data)
-print('Lambtha:', e1.lambtha)
+print('F(1):', e1.cdf(1))
 
 e2 = Exponential(lambtha=2)
-print('Lambtha:', e2.lambtha)
+print('F(1):', e2.cdf(1))
