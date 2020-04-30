@@ -16,7 +16,7 @@ class Normal:
             summatory = 0
             for elem in data:
                 summatory += (elem - self.mean) ** 2
-            self.stddev = (summatory / len(data)) ** 0.5
+            self.stddev = float((summatory / len(data)) ** 0.5)
 
         else:
             self.mean = float(mean)
