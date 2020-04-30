@@ -6,7 +6,7 @@ class Poisson:
     """ Class Poisson """
     def __init__(self, data=None, lambtha=1.):
         """Constructor"""
-        if data:
+        if data is not None:
             if not isinstance(data, list):
                 raise TypeError('data must be a list')
             if len(data) < 2:
