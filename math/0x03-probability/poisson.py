@@ -30,3 +30,10 @@ class Poisson:
             factorial = factorial * idx
         pmf_val = (e**(-self.lambtha) * (self.lambtha**k)) / factorial
         return pmf_val
+
+    def cdf(self, k):
+        """Calculates the value of the CDF for a given number of “successes”"""
+        sumatory = 0
+        for idx in range(k + 1):
+            sumatory += self.pmf(idx)
+        return sumatory
