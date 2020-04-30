@@ -10,7 +10,7 @@ class Normal:
         if data is not None:
             if not isinstance(data, list):
                 raise TypeError('data must be a list')
-            if len(data) < 2:
+            if len(data) <= 2:
                 raise ValueError('data must contain multiple values')
             self.mean = float(sum(data) / len(data))
             summatory = 0
@@ -19,7 +19,7 @@ class Normal:
             self.stddev = float((summatory / len(data)) ** 0.5)
 
         else:
-            self.mean = float(mean)
             if stddev < 0:
                 raise ValueError('stddev must be a positive value')
             self.stddev = float(stddev)
+            self.mean = float(mean)
