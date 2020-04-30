@@ -31,3 +31,16 @@ class Normal:
     def x_value(self, z):
         """Calculates the x-value of a given z-score"""
         return (z * self.stddev) + self.mean
+
+    def pdf(self, x):
+        """Calculates the value of the PDF for a given x-value"""
+        return 1 / (self.stddev * (2 * 3.1415926536) ** 0.5) * \
+            2.7182818285 ** (- (x - self.mean)**2 / (2 * self.stddev**2))
+
+    def cdf(self, x):
+        """Calculates the value of the CDF for a given x-value"""
+        arg = (x - self.mean) / (self.stddev * 2 ** 0.5)
+        erf = (2 / 3.1415926536 ** 0.5) * \
+              (arg - (arg ** 3) / 3 + (arg ** 5) / 10 -
+               (arg ** 7) / 42 + (arg ** 9) / 216)
+        return (1 / 2) * (1 + erf)
