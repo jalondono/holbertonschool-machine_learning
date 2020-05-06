@@ -22,7 +22,8 @@ class Neuron:
         """
         self.__W = np.random.normal(0, 1, (1, nx))
 
-        """The bias for the neuron. Upon instantiation, it should be initialized to 0."""
+        """The bias for the neuron. Upon instantiation,
+         it should be initialized to 0."""
         self.__b = 0
 
         """The activated output of the neuron (prediction).
