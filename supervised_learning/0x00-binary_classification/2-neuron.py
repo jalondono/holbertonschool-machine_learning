@@ -5,7 +5,7 @@ import numpy as np
 
 def sigmoid(Z):
     """Activation function of sigmoid neurone"""
-    sigma = (1.0 / (1.0 - np.exp(-Z)))
+    sigma = (1.0 / (1.0 + np.exp(-Z)))
     return sigma
 
 
