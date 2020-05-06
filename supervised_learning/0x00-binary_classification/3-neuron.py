@@ -70,5 +70,7 @@ class Neuron:
         :return: Cost
         """
         m = Y.shape[1]
-        cost = (-1 / m) * np.sum((Y * np.log(A) + ((1.0000001 - A) * np.log(1.0000001 - A))))
+        cost = -np.sum((Y * np.log(A)) +
+                       ((1.0000001 - Y) *
+                        np.log(1.0000001 - A))) / m
         return cost
