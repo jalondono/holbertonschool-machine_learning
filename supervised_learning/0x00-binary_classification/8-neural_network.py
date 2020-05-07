@@ -25,12 +25,12 @@ class NeuralNetwork:
         """The weights vector for the hidden layer."""
         self.W1 = np.random.normal(0, 1, (nodes, nx))
         """The bias for the hidden layer"""
-        self.b1 = np.array([[0.], [0.], [0]])
+        self.b1 = np.zeros((nodes, 1))
         """The activated output for the hidden layer."""
         self.A1 = 0
 
         """The weights vector for the output neuron"""
-        self.W2 = np.random.normal(0, 1, (1, 3))
+        self.W2 = np.random.normal(0, 1, (1, nodes))
         """The bias for the output neuron."""
         self.b2 = 0
         """The activated output for the output neuron (prediction"""
