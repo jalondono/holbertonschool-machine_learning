@@ -123,8 +123,6 @@ class Neuron:
         if alpha <= 0:
             raise ValueError('iterations must be a positive integer')
         for idx in range(iterations):
-            self.__A = self.forward_prop(X)
+            self.forward_prop(X)
             self.gradient_descent(X, Y, self.__A, alpha)
-        cost = self.cost(Y, self.__A)
-        A_evaluated = self.evaluate(X, Y)
-        return A_evaluated[0], cost
+        return self.evaluate(X, Y)
