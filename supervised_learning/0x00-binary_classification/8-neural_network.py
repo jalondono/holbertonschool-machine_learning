@@ -13,6 +13,10 @@ class NeuralNetwork:
         :param nx: is the number of input features
         :param nodes: is the number of nodes found in the hidden layer
         """
+        if not isinstance(nx, int):
+            raise TypeError('nx must be an integer')
+        if nodes < 1:
+            raise ValueError('nx must be a positive integer')
         if not isinstance(nodes, int):
             raise TypeError('nodes must be an integer')
         if nodes < 1:
