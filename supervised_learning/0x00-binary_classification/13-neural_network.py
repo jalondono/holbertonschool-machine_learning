@@ -143,5 +143,3 @@ class NeuralNetwork:
 
         self.__W1 = self.__W1 - (alpha * dw1)
         self.__b1 = self.__b1 - alpha * db1
-
-
