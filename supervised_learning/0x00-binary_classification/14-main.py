@@ -14,7 +14,7 @@ X_dev = X_dev_3D.reshape((X_dev_3D.shape[0], -1)).T
 
 np.random.seed(0)
 nn = NN(X_train.shape[0], 3)
-A, cost = nn.train(X_train, Y_train, iterations=100)
+A, cost = nn.train(X_train, Y_train, iterations=10)
 accuracy = np.sum(A == Y_train) / Y_train.shape[1] * 100
 print("Train cost:", cost)
 print("Train accuracy: {}%".format(accuracy))
