@@ -22,9 +22,9 @@ def plot_training(data, iterations, step):
     :return:
     """
     plt.xlim(-step, iterations)
-    plt.xlabel('iteration)', fontsize='x-small')
-    plt.ylabel('cost', fontsize='x-small')
-    plt.title('Training Cost', fontsize='x-small')
+    plt.xlabel('iteration)')
+    plt.ylabel('cost')
+    plt.title('Training Cost')
     plt.plot(data[0], data[1], 'b-')
 
 
