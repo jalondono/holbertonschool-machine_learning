@@ -26,6 +26,8 @@ class DeepNeuralNetwork:
         layers_dims.extend(layers)
         L = len(layers_dims) - 1  # integer representing the number of layers
         for l in range(1, L + 1):
+            if not isinstance(layers_dims[l], int) or layers_dims[l] < 1:
+                raise TypeError("layers must be a list of positive integers")
             self.weights['W' + str(l)] = \
                 np.random.randn(layers_dims[l],
                                 layers_dims[l - 1]) * \
