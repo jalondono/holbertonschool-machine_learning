@@ -120,8 +120,8 @@ class DeepNeuralNetwork:
         """
         m = Y.shape[1]
         for idx in reversed(range(self.__L)):
-            current_A = self.__cache['A' + str(idx + 1)]
-            preview_A = self.__cache['A' + str(idx)]
+            current_A = cache['A' + str(idx + 1)]
+            preview_A = cache['A' + str(idx)]
             current_W = self.__weights['W' + str(idx + 1)]
             current_b = self.__weights['b' + str(idx + 1)]
 
@@ -129,15 +129,13 @@ class DeepNeuralNetwork:
                 dz = current_A - Y
                 dw = np.matmul(preview_A, dz.T) / m
             else:
+                dz1a = np.matmul(self.__weights['W' + str(idx + 2)].T, dz)
                 g_prime = current_A * (1 - current_A)
-                dz1a = np.matmul(self.weights['W' + str(idx + 2)].T, dz)
                 dz = dz1a * g_prime
-                dw = np.matmul(dz, preview_A.T) / m
-            db = np.sum(dz, axis=1, keepdims=True) / m
+                dw = (np.matmul(preview_A, dz.T)) / m
+            db = (np.sum(dz, axis=1, keepdims=True)) / m
 
-            if idx == self.__L - 1:
-                current_W = (current_W - (alpha * dw).T)
-            else:
-                current_W = (current_W - (alpha * dw))
+            current_W = (current_W - (alpha * dw).T)
+
             self.__weights['b' + str(idx + 1)] =\
                 self.__weights['b' + str(idx + 1)] - (alpha * db)
