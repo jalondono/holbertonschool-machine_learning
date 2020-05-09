@@ -118,6 +118,7 @@ class DeepNeuralNetwork:
         :param alpha: is the learning rate
         :return: Updates the private attribute __weights
         """
+        weights = self.__weights.copy()
         m = Y.shape[1]
         for idx in reversed(range(self.__L)):
             current_A = cache['A' + str(idx + 1)]
@@ -129,14 +130,14 @@ class DeepNeuralNetwork:
                 dz = current_A - Y
                 dw = np.matmul(preview_A, dz.T) / m
             else:
-                dz1a = np.matmul(self.__weights['W' + str(idx + 2)].T, dz)
+                dz1a = np.matmul(weights['W' + str(idx + 2)].T, dz)
                 g_prime = current_A * (1 - current_A)
                 dz = dz1a * g_prime
                 dw = (np.matmul(preview_A, dz.T)) / m
             db = (np.sum(dz, axis=1, keepdims=True)) / m
 
             self.__weights['W' + str(idx + 1)] = \
-                (self.__weights['W' + str(idx + 1)] - (alpha * dw).T)
+                (weights['W' + str(idx + 1)] - (alpha * dw).T)
 
             self.__weights['b' + str(idx + 1)] =\
-                self.__weights['b' + str(idx + 1)] - (alpha * db)
+                weights['b' + str(idx + 1)] - (alpha * db)
