@@ -3,6 +3,16 @@
 import numpy as np
 
 
+def sigmoid(Z):
+    """
+    Sigmoid activation function
+    :param Z: is the array of W.X + b values
+    :return: Y predicted
+    """
+    sigma = (1.0 / (1.0 + np.exp(-Z)))
+    return sigma
+
+
 class DeepNeuralNetwork:
     """Deep neural network performing binary classification:"""
 
@@ -23,6 +33,7 @@ class DeepNeuralNetwork:
         if len(layers) == 0:
             raise TypeError('layers must be a list of positive integers')
 
+        self.layers = layers
         self.__L = len(layers)
         self.__cache = {}
         self.__weights = {}
@@ -53,3 +64,21 @@ class DeepNeuralNetwork:
     def weights(self):
         """Return weights attribute"""
         return self.__weights
+
+    def forward_prop(self, X):
+        """
+        Calculates the forward propagation of the neural network
+        :param X: that contains the input data
+        :return:
+        """
+        last_idx = 0
+        self.__cache['A0'] = X
+        for idx, value in enumerate(self.layers):
+            last_idx = idx + 1
+            idx_layer = str(idx + 1)
+            act_W = self.__weights['W' + idx_layer]
+            act_b = self.__weights['b' + idx_layer]
+            act_X = self.__cache['A' + str(idx)]
+            self.__cache['A' + idx_layer] = \
+                sigmoid(np.matmul(act_W, act_X) + act_b)
+        return self.__cache['A' + str(last_idx)], self.__cache
