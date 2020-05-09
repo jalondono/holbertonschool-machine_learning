@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """ Deep Neural Network """
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 def sigmoid(Z):
@@ -11,6 +12,24 @@ def sigmoid(Z):
     """
     sigma = (1.0 / (1.0 + np.exp(-Z)))
     return sigma
+
+
+def plot_training(data, iterations, step):
+    """
+    function to plot data training on matplotlib
+
+    Plot the training data every step iterations as a blue line
+    Include data from the 0th and last iteration
+
+    :param data: list of cost vs iteration
+    :param iterations: Number of iteration or step to the plot
+    :return:
+    """
+    plt.xlim(-step, iterations)
+    plt.xlabel('iteration')
+    plt.ylabel('cost')
+    plt.title('Training Cost')
+    plt.plot(data[0], data[1], 'b-')
 
 
 class DeepNeuralNetwork:
@@ -139,17 +158,22 @@ class DeepNeuralNetwork:
             self.__weights['W' + str(idx + 1)] = \
                 (weights['W' + str(idx + 1)] - (alpha * dw).T)
 
-            self.__weights['b' + str(idx + 1)] =\
+            self.__weights['b' + str(idx + 1)] = \
                 weights['b' + str(idx + 1)] - (alpha * db)
 
-    def train(self, X, Y, iterations=5000, alpha=0.05):
+    def train(self, X, Y, iterations=100, alpha=0.05,
+              verbose=True, graph=True, step=10):
         """
-
+        rains the deep neural network by updating
+        the private attributes
         :param X: contains the input data
-        :param Y: contains the correct labels for the input data
-        :param iterations: is the number of iterations to train over
+        :param Y:  contains the correct labels for the input data
+        :param iterations:  is the number of iterations to train ove
         :param alpha: is the learning rate
-        :return:
+        :param verbose: is a boolean that defines whether or not to print
+        :param graph: is a boolean that defines whether or not to graph
+        :param step: step to print or graph
+        :return: the evaluation of the training data
         """
         if not isinstance(iterations, int):
             raise TypeError("iterations must be an integer")
@@ -159,7 +183,30 @@ class DeepNeuralNetwork:
             raise TypeError("alpha must be a float")
         if alpha <= 0:
             raise ValueError("alpha must be positive")
-        for i in range(iterations):
+        if verbose is True or graph is True:
+            if not isinstance(step, int):
+                raise TypeError("step must be an integer")
+            if step <= 0 or step > iterations:
+                raise ValueError("step must be positive and <= iterations")
+        data = [[], []]
+        step_aux = 0
+        for idx in range(iterations + 1):
             self.forward_prop(X)
+            if (verbose or graph) and idx == 0:
+                data[0].append(0)
+                data[1].append(self.cost(Y,
+                                         self.__cache['A{}'.format(self.L)]))
+                cost = self.cost(Y, self.__cache['A{}'.format(self.L)])
+                step_aux += 1
+                print('Cost after {} iterations: {}'.format(idx, cost))
+
             self.gradient_descent(Y, self.cache, alpha)
+            if verbose and (idx == (step * step_aux)):
+                step_aux += 1
+                cost = self.cost(Y, self.__cache['A{}'.format(self.L)])
+                data[0].append(idx)
+                data[1].append(cost)
+                print('Cost after {} iterations: {}'.format(idx, cost))
+        if graph:
+            plot_training(data, iterations, step)
         return self.evaluate(X, Y)
