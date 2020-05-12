@@ -15,6 +15,6 @@ def one_hot_encode(Y, classes):
         return None
     if not isinstance(classes, int) or classes <= np.amax(Y):
         return None
-    b = np.zeros((Y.size, classes))
+    b = np.zeros((classes, Y.size))
     b[Y, np.arange(Y.size)] = 1
     return b
