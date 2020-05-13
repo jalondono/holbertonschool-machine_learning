@@ -19,7 +19,6 @@ def one_hot_decode(one_hot):
 
     Y = np.zeros(m)
     tmp = np.arange(m)
-
     axis = np.argmax(one_hot, axis=0)
     Y[tmp] = axis
     return Y.astype("int64")
