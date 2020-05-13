@@ -53,7 +53,7 @@ class DeepNeuralNetwork:
         if len(layers) == 0:
             raise TypeError('layers must be a list of positive integers')
 
-        self.layers = layers
+        self.__layers = layers
         self.__L = len(layers)
         self.__cache = {}
         self.__weights = {}
@@ -93,14 +93,20 @@ class DeepNeuralNetwork:
         """
         last_idx = 0
         self.__cache['A0'] = X
-        for idx, value in enumerate(self.layers):
+        for idx in range(self.__L):
             last_idx = idx + 1
             idx_layer = str(idx + 1)
             act_W = self.__weights['W' + idx_layer]
             act_b = self.__weights['b' + idx_layer]
             act_X = self.__cache['A' + str(idx)]
-            self.__cache['A' + idx_layer] = \
-                sigmoid(np.matmul(act_W, act_X) + act_b)
+            z = np.matmul(act_W, act_X) + act_b
+            if idx == self.__L - 1:
+                t = np.exp(z)
+                self.__cache['A' + idx_layer] =\
+                    t / np.sum(t, axis=0, keepdims=True)
+            else:
+                self.__cache['A' + idx_layer] = sigmoid(z)
+
         return self.__cache['A' + str(last_idx)], self.__cache
 
     def cost(self, Y, A):
@@ -111,9 +117,7 @@ class DeepNeuralNetwork:
         :return:
         """
         m = Y.shape[1]
-        cost = -np.sum((Y * np.log(A)) +
-                       ((1 - Y) *
-                        np.log(1.0000001 - A))) / m
+        cost = -1 / m * np.sum(Y * np.log(A))
         return cost
 
     def evaluate(self, X, Y):
@@ -123,10 +127,11 @@ class DeepNeuralNetwork:
         :param Y: contains the correct labels for the input data
         :return: neuron’s prediction and the cost of the network
         """
-        self.forward_prop(X)
-        aux_Y_evaluate = self.__cache['A' + str(len(self.__cache) - 1)]
-        Y_evalueate = np.where(aux_Y_evaluate > 0.5, 1, 0)
-        return Y_evalueate, self.cost(Y, aux_Y_evaluate)
+        A, _ = self.forward_prop(X)
+        cost = self.cost(Y, A)
+        A_max = np.amax(A, axis=0)
+        y_hat = np.where(A == A_max, 1, 0)
+        return y_hat, cost
 
     def gradient_descent(self, Y, cache, alpha=0.05):
         """
