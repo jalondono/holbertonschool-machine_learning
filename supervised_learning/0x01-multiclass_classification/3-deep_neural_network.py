@@ -11,7 +11,7 @@ def sigmoid(Z):
     :param Z: is the array of W.X + b values
     :return: Y predicted
     """
-    sigma = (1.0 / (1.0 + np.exp(-Z)))
+    sigma = (1 / (1 + np.exp(-Z)))
     return sigma
 
 
@@ -194,43 +194,43 @@ class DeepNeuralNetwork:
                 raise TypeError("step must be an integer")
             if step <= 0 or step > iterations:
                 raise ValueError("step must be positive and <= iterations")
-        data = [[], []]
-        step_aux = 0
-        for idx in range(iterations + 1):
-            self.forward_prop(X)
-            if (verbose or graph) and idx == 0:
-                data[0].append(0)
-                data[1].append(self.cost(Y,
-                                         self.__cache['A{}'.format(self.L)]))
-                cost = self.cost(Y, self.__cache['A{}'.format(self.L)])
-                step_aux += 1
-                print('Cost after {} iterations: {}'.format(idx, cost))
 
-            self.gradient_descent(Y, self.cache, alpha)
-            if verbose and (idx == (step * step_aux)):
-                step_aux += 1
-                cost = self.cost(Y, self.__cache['A{}'.format(self.L)])
-                data[0].append(idx)
-                data[1].append(cost)
-                print('Cost after {} iterations: {}'.format(idx, cost))
-        if graph:
-            plot_training(data, iterations, step)
-        return self.evaluate(X, Y)
+        cost_data = []
+        step_data = []
+        self.evaluate(X, Y)
+        for i in range(iterations):
+            self.gradient_descent(Y, self.__cache, alpha)
+            y_hat, cost = self.evaluate(X, Y)
+            if i % step == 0 or i == iterations:
+                cost_data.append(cost)
+                step_data.append(i)
+                if verbose is True:
+                    print("Cost after {} iterations: {}".format(i, cost))
+
+        if graph is True:
+            plt.plot(step_data, cost_data, 'b-')
+            plt.title('Training Cost')
+            plt.xlabel('iteration')
+            plt.ylabel('cost')
+            plt.show()
+
+        return y_hat, cost
+
 
     def save(self, filename):
-        """
-        Saves the instance object to a file in pickle format
-        :param filename:  is the file to which the object should be saved
-        :return:
-        """
-        if filename[-4:] != '.pkl':
-            filename += '.pkl'
+            """
+            Saves the instance object to a file in pickle format
+            :param filename:  is the file to which the object should be saved
+            :return:
+            """
+            if filename[-4:] != '.pkl':
+                filename += '.pkl'
 
-        # open the file for writing
-        with open(filename, 'wb') as fn:
-            # this writes the object a to the
-            # file named 'testfile'
-            pickle.dump(self, fn)
+            # open the file for writing
+            with open(filename, 'wb') as fn:
+                # this writes the object a to the
+                # file named 'testfile'
+                pickle.dump(self, fn)
 
     @staticmethod
     def load(filename):
