@@ -240,5 +240,5 @@ class DeepNeuralNetwork:
                 # load the object from the file into var b
                 data_obj = pickle.load(fn)
                 return data_obj
-        except Exception:
+        except FileNotFoundError:
             return None
