@@ -103,7 +103,7 @@ class DeepNeuralNetwork:
             act_b = self.__weights['b' + idx_layer]
             act_X = self.__cache['A' + str(idx)]
             z = np.matmul(act_W, act_X) + act_b
-            if idx == self.__L - 1:
+            if idx != self.__L - 1:
                 if self.__activation == 'sig':
                     self.__cache['A' + idx_layer] = 1 / (1 + np.exp(-z))
                 else:
