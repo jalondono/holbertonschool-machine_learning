@@ -12,7 +12,7 @@ X_train = X_train_3D.reshape((X_train_3D.shape[0], -1)).T
 
 np.random.seed(0)
 deep = Deep(X_train.shape[0], [3, 1])
-A, cost = deep.train(X_train, Y_train, iterations=20, graph=False, step=5)
+A, cost = deep.train(X_train, Y_train, iterations=500, graph=False, step=100)
 deep.save('2-output')
 del deep
 

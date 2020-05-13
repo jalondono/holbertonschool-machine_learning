@@ -215,30 +215,30 @@ class DeepNeuralNetwork:
     def save(self, filename):
         """
         Saves the instance object to a file in pickle format
-        filename is the file to which the object should be saved
-        If filename does not have the extension .pkl, add it
+        :param filename:  is the file to which the object should be saved
+        :return:
         """
-        if filename[-4:] != ".pkl":
-            filename = filename + ".pkl"
+        if filename[-4:] != '.pkl':
+            filename += '.pkl'
 
         # open the file for writing
-        with open(filename, 'wb') as f:
-            # writes the object to the
-            # file named 'filename'
-            pickle.dump(self, f)
+        with open(filename, 'wb') as fn:
+            # this writes the object a to the
+            # file named 'testfile'
+            pickle.dump(self, fn)
 
     @staticmethod
     def load(filename):
         """
         Loads a pickled DeepNeuralNetwork object
-        filename is the file from which the object should be loaded
-        Returns: the loaded object, or None if filename doesn’t exist
+        :param filename: is the file from which the object should be loaded
+        :return:
         """
         try:
-            # open the file for reading (r) in binary (b)
-            with open(filename, 'rb') as f:
-                # load the object from the file
-                obj = pickle.load(f)
-            return obj
+            # we open the file for reading
+            with open(filename, 'rb') as fn:
+                # load the object from the file into var b
+                data_obj = pickle.load(fn)
+                return data_obj
         except FileNotFoundError:
             return None
