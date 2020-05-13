@@ -102,7 +102,7 @@ class DeepNeuralNetwork:
             z = np.matmul(act_W, act_X) + act_b
             if idx == self.__L - 1:
                 t = np.exp(z)
-                self.__cache['A' + idx_layer] =\
+                self.__cache['A' + idx_layer] = \
                     t / np.sum(t, axis=0, keepdims=True)
             else:
                 self.__cache['A' + idx_layer] = sigmoid(z)
@@ -216,21 +216,20 @@ class DeepNeuralNetwork:
 
         return y_hat, cost
 
-
     def save(self, filename):
-            """
+        """
             Saves the instance object to a file in pickle format
             :param filename:  is the file to which the object should be saved
             :return:
             """
-            if filename[-4:] != '.pkl':
-                filename += '.pkl'
+        if filename[-4:] != '.pkl':
+            filename += '.pkl'
 
-            # open the file for writing
-            with open(filename, 'wb') as fn:
-                # this writes the object a to the
-                # file named 'testfile'
-                pickle.dump(self, fn)
+        # open the file for writing
+        with open(filename, 'wb') as fn:
+            # this writes the object a to the
+            # file named 'testfile'
+            pickle.dump(self, fn)
 
     @staticmethod
     def load(filename):
