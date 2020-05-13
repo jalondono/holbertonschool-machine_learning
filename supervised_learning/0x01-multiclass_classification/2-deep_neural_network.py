@@ -14,7 +14,7 @@ def sigmoid(Z):
     sigma = (1 / (1 + np.exp(-Z)))
     return sigma
 
-2
+
 def plot_training(data, iterations, step):
     """
     function to plot data training on matplotlib
