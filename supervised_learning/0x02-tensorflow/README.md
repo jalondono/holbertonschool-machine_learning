@@ -1,0 +1,14 @@
+READMEpkg-resources	0.0.0	
+protobuf	3.11.3	
+pycodestyle	2.5.0	
+pyparsing	2.4.7	
+python-dateutil	2.8.1	
+scipy	1.3.0	
+setuptools	40.8.0	
+six	1.14.0	
+tensorboard	1.13.1	
+tensorflow-estimator	1.13.0	
+tensorflow-gpu	1.13.1	
+termcolor	1.1.0	
+wheel	0.34.2	
+zipp	3.1.0	
