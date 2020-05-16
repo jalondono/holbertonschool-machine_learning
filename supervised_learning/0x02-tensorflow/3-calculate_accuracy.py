@@ -10,4 +10,4 @@ def calculate_accuracy(y, y_pred):
     :param y_pred: is a tensor containing the network’s predictions
     :return: a tensor containing the decimal accuracy of the prediction
     """
-    return tf.metrics.accuracy(y, y_pred)[0]
+    return tf.metrics.accuracy(y, y_pred, name='Mean')[0]
