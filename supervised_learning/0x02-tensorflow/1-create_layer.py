@@ -11,10 +11,11 @@ def create_layer(prev, n, activation):
     :param activation:  is the activation function that the layer should use
     :return:
     """
-    tf.contrib.layers.variance_scaling_initializer(mode="FAN_AVG")
+    initialization = tf.contrib.layers.variance_scaling_initializer(mode="FAN_AVG")
     layer = tf.layers.dense(
         inputs=prev,
         units=n,
+        kernel_initializer=initialization,
         activation=activation,
         name='layer')
     return layer
