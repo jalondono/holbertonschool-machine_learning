@@ -55,7 +55,7 @@ def train(X_train, Y_train, X_valid, Y_valid, layer_sizes,
             """ For validation """
             val_train_loss, val_accuarcy_value = sess.run(
                 [loss, Y_accuracy],
-                feed_dict={X: X_train, Y: Y_train})
+                feed_dict={X: X_valid, Y: Y_valid})
 
             if idx == 0 or idx % 100 == 0:
                 print("After {} iterations:".format(idx))
