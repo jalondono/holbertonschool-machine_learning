@@ -57,7 +57,7 @@ def train(X_train, Y_train, X_valid, Y_valid, layer_sizes,
                 [loss, Y_accuracy],
                 feed_dict={X: X_valid, Y: Y_valid})
 
-            if idx == iterations or idx % 100 == 0:
+            if idx == iterations or idx % 10 == 0:
                 print("After {} iterations:".format(idx))
                 print('\tTraining Cost: {}'.format(train_loss))
                 print("\tTraining Accuracy: {}".format(train_accuarcy_value))
