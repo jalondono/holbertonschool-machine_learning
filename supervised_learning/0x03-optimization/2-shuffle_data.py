@@ -11,5 +11,6 @@ def shuffle_data(X, Y):
     :return:
     """
     x = np.random.permutation(X)
+    np.random.seed(0)
     y = np.random.permutation(Y)
     return x, y
