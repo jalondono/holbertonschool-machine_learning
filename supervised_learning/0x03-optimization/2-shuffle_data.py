@@ -10,7 +10,5 @@ def shuffle_data(X, Y):
     :param Y: is the second numpy.ndarray of shape (m, ny) to shuffle
     :return:
     """
-    x = np.random.permutation(X)
-    np.random.seed(0)
-    y = np.random.permutation(Y)
-    return x, y
+    idx = np.random.permutation(len(X))
+    return X[idx], Y[idx]
