@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""Mini-Batch"""
-import numpy as np
+"""Contains the train_mini_batch function"""
+
 import tensorflow as tf
 
 shuffle_data = __import__('2-shuffle_data').shuffle_data
@@ -27,7 +27,6 @@ def train_mini_batch(X_train, Y_train, X_valid, Y_valid,
      should be saved after training
     :return: the path where the model was saved
     """
-    batches = np.array_split(X_train, X_train.shape[0] // batch_size)
     saver = tf.train.import_meta_graph("{}.meta".format(load_path))
     with tf.Session() as sess:
         saver.restore(sess, load_path)
@@ -38,7 +37,7 @@ def train_mini_batch(X_train, Y_train, X_valid, Y_valid,
         loss = tf.get_collection('loss')[0]
         train_op = tf.get_collection('train_op')[0]
 
-        number_mini_batches = np.around(X_train.shape[0] // batch_size)
+        number_mini_batches = X_train.shape[0] // batch_size
         if X_train.shape[0] % batch_size != 0:
             number_mini_batches += 1
 
