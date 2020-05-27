@@ -6,8 +6,10 @@ import numpy as np
 def sensitivity(confusion):
     """
     calculates the sensitivity for each class in a confusion matrix:
-    :param confusion:
-    :return:
+    :param confusion: confusion is a confusion numpy.ndarray of shape
+    (classes, classes) where row indices represent the correct
+     labels and column indices represent the predicted labels
+    :return: the sensitivity of each class
     """
     idx_max_value = np.argmax(confusion, axis=0)
     sumatory_classes = np.sum(confusion, axis=1)
