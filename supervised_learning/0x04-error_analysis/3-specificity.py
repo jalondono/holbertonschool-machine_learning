@@ -12,6 +12,6 @@ def specificity(confusion):
     """
     TP = np.diagonal(confusion)
     TN = np.sum(TP) - TP
-    FP = np.sum(confusion, axis=1) - TP
+    FP = np.sum(confusion, axis=0) - TP
     speci = TN / (TN + FP)
     return speci
