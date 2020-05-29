@@ -1,6 +1,3 @@
-         Project: 0x05. Regularization | Holberton Intranet           
-
-
 0x05. Regularization
 ====================
 
