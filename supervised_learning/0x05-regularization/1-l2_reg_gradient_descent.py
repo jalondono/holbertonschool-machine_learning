@@ -26,7 +26,7 @@ def l2_reg_gradient_descent(Y, weights, cache, alpha, lambtha, L):
             dz = current_A - Y
             dw = np.matmul(preview_A, dz.T) / m
         else:
-            dz1a = np.matmul(weights['W' + str(idx + 2)].T, dz)
+            dz1a = np.matmul(copy_weight['W' + str(idx + 2)].T, dz)
             g_prime = 1 - current_A ** 2
             dz = dz1a * g_prime
             dw = (np.matmul(preview_A, dz.T)) / m
