@@ -8,7 +8,8 @@ def l2_reg_create_layer(prev, n, activation, lambtha):
     Create a Layer with L2 Regularization
     :param prev: is a tensor containing the output of the previous layer
     :param n: is the number of nodes the new layer should contain
-    :param activation: is the activation function that should be used on the layer
+    :param activation: is the activation function that should be
+     used on the layer
     :param lambtha: is the L2 regularization paramete
     :return: the output of the new layer
     """
