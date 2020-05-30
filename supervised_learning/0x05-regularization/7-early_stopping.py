@@ -16,7 +16,7 @@ def early_stopping(cost, opt_cost, threshold, patience, count):
     :return: a boolean of whether the network should be
     stopped early, followed by the updated count
     """
-    current_err = abs(opt_cost - cost)
+    current_err = (opt_cost - cost)
     if current_err > threshold:
         return False, 0
     else:
