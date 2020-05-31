@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """ Batch Normalization Upgraded """
-import numpy as np
+
 import tensorflow as tf
 
 
