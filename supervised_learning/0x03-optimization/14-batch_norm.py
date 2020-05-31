@@ -27,6 +27,4 @@ def create_batch_norm_layer(prev, n, activation):
                                          offset=beta, scale=gamma,
                                          variance_epsilon=1e-8)
 
-    if activation is None:
-        return model(prev)
     return activation(adjusted)
