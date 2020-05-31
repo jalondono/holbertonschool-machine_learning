@@ -8,24 +8,32 @@ def create_batch_norm_layer(prev, n, activation):
     """creates a batch normalization layer
     for a neural network in tensorflow:"""
 
-    init = tf.contrib.layers.variance_scaling_initializer(mode="FAN_AVG")
+    initializer = \
+        tf.contrib.layers.variance_scaling_initializer(mode="FAN_AVG")
 
-    layer = tf.layers.Dense(units=n,
+    # dense layer model
+    model = tf.layers.Dense(units=n,
                             activation=None,
-                            kernel_initializer=init,
+                            kernel_initializer=initializer,
                             name='layer')
-    mean, variance = tf.nn.moments(layer(prev), axes=0, keepdims=True)
+
+    # normalization parameter calculation
+    mean, variance = tf.nn.moments(model(prev), axes=0, keep_dims=True)
+
+    # incorporation of trainable parameters beta and gamma
+    # for scale and offset
     beta = tf.Variable(tf.constant(0.0, shape=[n]),
                        name='beta', trainable=True)
     gamma = tf.Variable(tf.constant(1.0, shape=[n]),
                         name='gamma', trainable=True)
 
-    bn = tf.nn.batch_normalization(layer(prev),
-                                   mean=mean,
-                                   variance=variance,
-                                   offset=beta,
-                                   scale=gamma,
-                                   variance_epsilon=1e-8)
+    # Normalization over result after activation (with mean and variance)
+    # and later adjusting with beta and gamma for
+    # offset and scale respectively
+    adjusted = tf.nn.batch_normalization(model(prev), mean, variance,
+                                         offset=beta, scale=gamma,
+                                         variance_epsilon=1e-8)
+
     if activation is None:
-        return layer(prev)
-    return activation(bn)
+        return model(prev)
+    return activation(adjusted)
