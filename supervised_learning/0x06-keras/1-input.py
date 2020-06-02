@@ -16,19 +16,20 @@ def build_model(nx, layers, activations, lambtha, keep_prob):
     :return: the keras model
     """
     reg = K.regularizers.l2(lambtha)
-    input = K.Input(shape=(nx,))
+    inp = K.Input(shape=(nx,))
     idx = 0
-    past_layer = input
-    for idx in range(len(layers) - 1):
+
+    inputs = K.layers.Dense(layers[idx],
+                            activation=activations[idx],
+                            kernel_regularizer=reg,
+                            input_shape=(nx,))(inp)
+    past_layer = inputs
+    for idx in range(1, len(layers)):
+        dropout = K.layers.Dropout(1 - keep_prob)(past_layer)
+        past_layer = dropout
         hidden = K.layers.Dense(layers[idx],
                                 activation=activations[idx],
                                 kernel_regularizer=reg)(past_layer)
-        dropout = K.layers.Dropout(1 - keep_prob)(hidden)
-        past_layer = dropout
-
-    idx += 1
-    output = K.layers.Dense(layers[idx],
-                            activation=activations[idx],
-                            kernel_regularizer=reg)(past_layer)
-    model = K.models.Model(inputs=input, outputs=output)
+        past_layer = hidden
+    model = K.Model(inputs=inp, outputs=past_layer)
     return model
