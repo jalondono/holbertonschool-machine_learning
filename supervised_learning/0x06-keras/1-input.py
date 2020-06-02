@@ -23,7 +23,7 @@ def build_model(nx, layers, activations, lambtha, keep_prob):
         hidden = K.layers.Dense(layers[idx],
                                 activation=activations[idx],
                                 kernel_regularizer=reg)(past_layer)
-        dropout = K.layers.Dropout(keep_prob)(hidden)
+        dropout = K.layers.Dropout(1 - keep_prob)(hidden)
         past_layer = dropout
 
     idx += 1
