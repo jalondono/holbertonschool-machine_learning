@@ -12,12 +12,12 @@ def convolve_grayscale_valid(images, kernel):
      the kernel for the convolution
     :return: a numpy.ndarray containing the convolved image
     """
-    w = images.shape[2] - kernel.shape[1] + 1
-    h = images.shape[1] - kernel.shape[0] + 1
-    m = images.shape[0]
+    w = int(images.shape[2] - kernel.shape[1] + 1)
+    h = int(images.shape[1] - kernel.shape[0] + 1)
+    m = int(images.shape[0])
 
-    kw = kernel.shape[0]
-    kh = kernel.shape[1]
+    kw = kernel.shape[1]
+    kh = kernel.shape[0]
     new_img = np.zeros((m, h, w))
 
     for row in range(w):
