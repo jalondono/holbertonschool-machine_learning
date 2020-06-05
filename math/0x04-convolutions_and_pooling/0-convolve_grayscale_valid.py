@@ -22,7 +22,7 @@ def convolve_grayscale_valid(images, kernel):
 
     for row in range(w):
         for colum in range(h):
-            img = images[0:, row: kw + row, colum: kh + colum]
+            img = images[0:, colum: kh + colum, row: kw + row]
             pixel = np.sum(img * kernel, axis=(1, 2))
-            new_img[0:, row, colum] = pixel
+            new_img[0:, colum, row] = pixel
     return new_img
