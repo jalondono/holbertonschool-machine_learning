@@ -18,7 +18,7 @@ def convolve_grayscale_same(images, kernel):
 
     kw = kernel.shape[0]
     kh = kernel.shape[1]
-    new_img = np.zeros((m, w, h))
+
     ph = int((kh - 1) / 2)
     pw = int((kw - 1) / 2)
 
@@ -26,16 +26,11 @@ def convolve_grayscale_same(images, kernel):
                            pad_width=((0, 0), (ph, ph), (pw, pw)),
                            mode='constant', constant_values=0)
 
-    # initialize convolution output tensor
-    output = np.zeros((m, w, h))
+    out_img = np.zeros((m, w, h))
 
-    # Loop over every pixel of the output
     for x in range(w):
         for y in range(h):
-            # element-wise multiplication of the kernel and the image
-            output[:, y, x] = \
-                (kernel * images_padded[:,
-                          y: y + kh,
-                          x: x + kw]).sum(axis=(1, 2))
-
-    return output
+            img = images_padded[:, y: y + kh, x: x + kw]
+            pixel = np.sum(img * kernel, axis=(1, 2))
+            out_img[:, y, x] = pixel
+    return out_img
