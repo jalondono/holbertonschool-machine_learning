@@ -53,8 +53,8 @@ def convolve(images, kernels, padding='same', stride=(1, 1)):
     out_img = np.zeros((m, out_h, out_w, n_k))
     for x in range(out_w):
         for y in range(out_h):
-            for idx, kernel in enumerate(kernels):
+            for idx in range(n_k):
                 img = img_padded[:, y * sh: y * sh + kh, x * sw: x * sw + kw]
-                pixel = np.sum(img * kernel, axis=(1, 2, 3))
+                pixel = np.sum(img * kernels[:, :, :, idx], axis=(1, 2, 3))
                 out_img[:, y, x, idx] = pixel
     return out_img
