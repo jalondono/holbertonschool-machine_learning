@@ -15,38 +15,43 @@ def convolve_grayscale(images, kernel, padding='same', stride=(1, 1)):
     :param stride: is a tuple of (sh, sw)
     :return: a numpy.ndarray containing the convolved images
     """
+    # image sizes
     m = images.shape[0]
-    himage = images.shape[1]
-    wimage = images.shape[2]
-    hkernel = kernel.shape[0]
-    wkernel = kernel.shape[1]
+    h = images.shape[1]
+    w = images.shape[2]
+
+    # Kernel Size
+    kh = kernel.shape[0]
+    kw = kernel.shape[1]
+
+    # Strides
     sh = stride[0]
     sw = stride[1]
 
+    # padding
+    ph = 0
+    pw = 0
+
     if padding == 'same':
-        ph = int(((himage - 1) * sh + hkernel - himage) / 2) + 1
-        pw = int(((wimage - 1) * sw + wkernel - wimage) / 2) + 1
-    if padding == 'valid':
-        ph = 0
-        pw = 0
-    if type(padding) is tuple:
+        # padding of zeros
+        ph = int(((h - 1) * sh + kh - h) / 2) + 1
+        pw = int(((w - 1) * sw + kw - w) / 2) + 1
+
+    if isinstance(padding, tuple):
         ph = padding[0]
         pw = padding[1]
 
-    hfinal = int(((himage - hkernel + (2 * ph)) / sh) + 1)
-    wfinal = int(((wimage - wkernel + (2 * pw)) / sw) + 1)
-    convoluted = np.zeros((m, hfinal, wfinal))
+    out_h = int(((h - kh + (2 * ph)) / sh) + 1)
+    out_w = int(((w - kw + (2 * pw)) / sw) + 1)
 
-    mImage = np.arange(0, m)
-    images = np.pad(images, [(0, 0), (ph, ph), (pw, pw)], 'constant',
-                    constant_values=0)
+    img_padded = np.pad(images,
+                        pad_width=((0, 0), (ph, ph), (pw, pw)),
+                        mode='constant', constant_values=0)
 
-    for i in range(hfinal):
-        for j in range(wfinal):
-            data = np.sum(np.multiply(images[mImage,
-                                      i * sh:hkernel + (i * sh),
-                                      j * sw:wkernel + (j * sw)],
-                                      kernel), axis=(1, 2))
-            convoluted[mImage, i, j] = data
-
-    return convoluted
+    out_img = np.zeros((m, out_h, out_w))
+    for x in range(out_w):
+        for y in range(out_h):
+            img = img_padded[:, y * sh: y * sh + kh, x * sw: x * sw + kw]
+            pixel = np.sum(img * kernel, axis=(1, 2))
+            out_img[:, y, x] = pixel
+    return out_img
