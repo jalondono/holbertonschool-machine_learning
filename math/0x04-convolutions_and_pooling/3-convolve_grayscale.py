@@ -35,7 +35,7 @@ def convolve_grayscale(images, kernel, padding='same', stride=(1, 1)):
     if padding == 'same':
         # padding of zeros
         ph = int(((h - 1) * sh + kh - h) / 2) + 1
-        pw = max(((w - 1) * sw + kw - w) / 2) + 1
+        pw = int(((w - 1) * sw + kw - w) / 2) + 1
 
     if isinstance(padding, tuple):
         ph = padding[0]
