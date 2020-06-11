@@ -68,10 +68,10 @@ def conv_backward(dZ, A_prev, W, b, padding="same", stride=(1, 1)):
         for x in range(w_new):
             for y in range(h_new):
                 for c in range(c_new):
-                    dA[:, y * sh: y * sh + kh, x * sw: x * sw + kw]\
+                    dA[:, y * sh: y * sh + kh, x * sw: x * sw + kw] \
                         += W[:, :, :, c] * dZ[i, y, x, c]
                     aux_str = 'A_prev[i, y * sh: y *' \
                               ' sh + kh, x * sw: x * sw + kw]'
-                    dw[:, :, :, c]\
+                    dw[:, :, :, c] \
                         += eval(aux_str) * dZ[i, y, x, c]
     return dA, dw, db
