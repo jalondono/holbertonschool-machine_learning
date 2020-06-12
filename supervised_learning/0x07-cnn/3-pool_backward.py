@@ -34,9 +34,6 @@ def pool_backward(dA, A_prev, kernel_shape, stride=(1, 1), mode='max'):
 
     # image sizes
     m = A_prev.shape[0]
-    h = A_prev.shape[1]
-    w = A_prev.shape[2]
-    c = A_prev.shape[3]
 
     # Kernel Size
     kh = kernel_shape[0]
@@ -46,14 +43,14 @@ def pool_backward(dA, A_prev, kernel_shape, stride=(1, 1), mode='max'):
     sh = stride[0]
     sw = stride[1]
 
-    dA = np.zeros(A_prev.shape)
+    dA = np.zeros_like(A_prev, dtype=dA.dtype)
 
     for i in range(m):
-        for x in range(w_new):
-            for y in range(h_new):
+        for y in range(h_new):
+            for x in range(w_new):
                 for ch in range(c_new):
-                    aux_dA = dA[i, y, x, ch]
                     pool = A_prev[i, y * sh: y * sh + kh, x * sw: x * sw + kw, ch]
+                    aux_dA = dA[i, y, x, ch]
 
                     if mode == 'max':
                         mask = create_mask_from_window(pool)
