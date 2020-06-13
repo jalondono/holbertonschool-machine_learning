@@ -42,13 +42,19 @@ def conv_forward(A_prev, W, b, activation,
     pw = 0
 
     if padding == 'same':
-        # padding of zeros
-        ph = int(((h_prev - 1) * sh + kh - h_prev) / 2) + 1
-        pw = int(((w_prev - 1) * sw + kw - w_prev) / 2) + 1
+        if kh % 2 == 0:
+            ph = int((h_prev * sh + kh - h_prev) / 2)
+            n_h = int(((h_prev + 2 * ph - kh) / sh))
+        else:
+            ph = int(((h_prev - 1) * sh + kh - h_prev) / 2)
+            n_h = int(((h_prev + 2 * ph - kh) / sh) + 1)
 
-    if isinstance(padding, tuple):
-        ph = padding[0]
-        pw = padding[1]
+        if kw % 2 == 0:
+            pw = int((w_prev * sw + kw - w_prev) / 2)
+            n_w = int(((w_prev + 2 * pw - kw) / sw))
+        else:
+            pw = int(((w_prev - 1) * sw + kw - w_prev) / 2)
+            n_w = int(((w_prev + 2 * pw - kw) / sw) + 1)
 
     out_h = int(((h_prev - kh + (2 * ph)) / sh) + 1)
     out_w = int(((w_prev - kw + (2 * pw)) / sw) + 1)
@@ -57,7 +63,7 @@ def conv_forward(A_prev, W, b, activation,
                         pad_width=((0, 0), (ph, ph), (pw, pw), (0, 0)),
                         mode='constant', constant_values=0)
 
-    out_img = np.zeros((m, out_h, out_w, c_new))
+    out_img = np.zeros((m, n_h, n_w, c_new))
     for x in range(out_w):
         for y in range(out_h):
             for idx in range(c_new):
