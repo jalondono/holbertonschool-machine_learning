@@ -41,6 +41,9 @@ def conv_forward(A_prev, W, b, activation,
     ph = 0
     pw = 0
 
+    n_h = int(((h_prev + 2 * ph - kh) / sh) + 1)
+    n_w = int(((w_prev + 2 * pw - kw) / sw) + 1)
+
     if padding == 'same':
         if kh % 2 == 0:
             ph = int((h_prev * sh + kh - h_prev) / 2)
@@ -56,16 +59,13 @@ def conv_forward(A_prev, W, b, activation,
             pw = int(((w_prev - 1) * sw + kw - w_prev) / 2)
             n_w = int(((w_prev + 2 * pw - kw) / sw) + 1)
 
-    out_h = int(((h_prev - kh + (2 * ph)) / sh) + 1)
-    out_w = int(((w_prev - kw + (2 * pw)) / sw) + 1)
-
     img_padded = np.pad(A_prev,
                         pad_width=((0, 0), (ph, ph), (pw, pw), (0, 0)),
                         mode='constant', constant_values=0)
 
     out_img = np.zeros((m, n_h, n_w, c_new))
-    for x in range(out_w):
-        for y in range(out_h):
+    for x in range(n_w):
+        for y in range(n_h):
             for idx in range(c_new):
                 img = img_padded[:, y * sh: y * sh + kh, x * sw: x * sw + kw]
                 pixel = np.sum(img * W[:, :, :, idx], axis=(1, 2, 3))
