@@ -28,7 +28,7 @@ def lenet5(X):
 
     model.add(K.layers.Conv2D(filters=16,
                               kernel_size=(5, 5),
-                              padding='same',
+                              padding='valid',
                               activation='relu',
                               kernel_initializer=kernel_init))
 
