@@ -12,47 +12,85 @@ def lenet5(X):
     :return: a K.Model compiled to use Adam optimization
      (with default hyperparameters) and accuracy metrics
     """
-    kernel_init = K.initializers.he_normal(seed=None)
-    shape = X.shape
+    # kernel_init = K.initializers.he_normal(seed=None)
+    # shape = X.shape
+    #
+    # model = K.Sequential()
+    # model.add(K.layers.Conv2D(filters=6,
+    #                           kernel_size=(5, 5),
+    #                           padding='same',
+    #                           activation='relu',
+    #                           kernel_initializer=kernel_init,
+    #                           input_shape=shape[1:]))
+    #
+    # model.add(K.layers.MaxPool2D(pool_size=(2, 2),
+    #                              strides=(2, 2)))
+    #
+    # model.add(K.layers.Conv2D(filters=16,
+    #                           kernel_size=(5, 5),
+    #                           padding='valid',
+    #                           activation='relu',
+    #                           kernel_initializer=kernel_init))
+    #
+    # model.add(K.layers.MaxPool2D(pool_size=(2, 2),
+    #                              strides=(2, 2)))
+    #
+    # model.add(K.layers.Flatten())
+    #
+    # model.add(K.layers.Dense(units=120,
+    #                          activation='relu',
+    #                          kernel_initializer=kernel_init,
+    #                          ))
+    #
+    # model.add(K.layers.Dense(units=84,
+    #                          activation='relu',
+    #                          kernel_initializer=kernel_init,
+    #                          ))
+    #
+    # model.add(K.layers.Dense(units=10,
+    #                          kernel_initializer=kernel_init,
+    #                          activation='softmax'
+    #                          ))
+    #
+    # model.compile(optimizer=K.optimizers.Adam(),
+    #               loss='categorical_crossentropy',
+    #               metrics=['accuracy'])
+    # return model
+    init = K.initializers.he_normal(seed=None)
+    output = K.layers.Conv2D(filters=6,
+                             kernel_size=5,
+                             padding='same',
+                             kernel_initializer=init,
+                             activation='relu')(X)
 
-    model = K.Sequential()
-    model.add(K.layers.Conv2D(filters=6,
-                              kernel_size=(5, 5),
-                              padding='same',
-                              activation='relu',
-                              kernel_initializer=kernel_init,
-                              input_shape=shape[1:]))
+    output2 = K.layers.MaxPool2D(strides=2)(output)
 
-    model.add(K.layers.MaxPool2D(input_shape=(2, 2),
-                                 strides=(2, 2)))
-
-    model.add(K.layers.Conv2D(filters=16,
-                              kernel_size=(5, 5),
+    output3 = K.layers.Conv2D(filters=16,
+                              kernel_size=5,
                               padding='valid',
-                              activation='relu',
-                              kernel_initializer=kernel_init))
+                              kernel_initializer=init,
+                              activation='relu')(output2)
 
-    model.add(K.layers.MaxPool2D(input_shape=(2, 2),
-                                 strides=(2, 2)))
+    output4 = K.layers.MaxPool2D(strides=2)(output3)
 
-    model.add(K.layers.Flatten())
+    output5 = K.layers.Flatten()(output4)
 
-    model.add(K.layers.Dense(units=120,
-                             activation='relu',
-                             kernel_initializer=kernel_init,
-                             ))
+    output6 = K.layers.Dense(units=120,
+                             kernel_initializer=init,
+                             activation='relu')(output5)
 
-    model.add(K.layers.Dense(units=84,
-                             activation='relu',
-                             kernel_initializer=kernel_init,
-                             ))
+    output7 = K.layers.Dense(units=84,
+                             kernel_initializer=init,
+                             activation='relu')(output6)
 
-    model.add(K.layers.Dense(units=10,
-                             kernel_initializer=kernel_init,
-                             activation='softmax'
-                             ))
+    output8 = K.layers.Dense(units=10,
+                             kernel_initializer=init,
+                             activation='softmax')(output7)
+
+    model = K.models.Model(inputs=X, outputs=output8)
 
     model.compile(optimizer=K.optimizers.Adam(),
                   loss='categorical_crossentropy',
                   metrics=['accuracy'])
+
     return model
