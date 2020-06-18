@@ -62,13 +62,16 @@ def inception_network():
                                        padding='same')(init_layer)
     init_layer = inception_block(init_layer, [256, 160, 320, 32, 128, 128])
     init_layer = inception_block(init_layer, [384, 192, 384, 48, 128, 128])
+
     init_layer = K.layers.AveragePooling2D(pool_size=(7, 7),
-                                           strides=(1, 1),
                                            padding='same')(init_layer)
+
     init_layer = K.layers.Dropout(rate=0.40)(init_layer)
+
     init_layer = K.layers.Dense(units=1000,
                                 activation='softmax',
                                 kernel_initializer=init)(init_layer)
+
     model = K.models.Model(inputs=input_img, outputs=init_layer)
 
     return model
