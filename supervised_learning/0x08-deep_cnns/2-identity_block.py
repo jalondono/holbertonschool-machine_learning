@@ -6,7 +6,7 @@ import tensorflow.keras as K
 def identity_block(A_prev, filters):
     """
      builds an identity block as described in Deep Residual
-     Learning for Image Recognition (2015):
+     Learning for Image Recognition (2015)
     :param A_prev:
     :param filters:
     :return:
