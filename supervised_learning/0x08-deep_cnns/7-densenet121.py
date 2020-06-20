@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+""" DenseNet-121 """
 import tensorflow.keras as K
 
 dense_block = __import__('5-dense_block').dense_block
