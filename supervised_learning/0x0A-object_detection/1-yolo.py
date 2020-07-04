@@ -50,8 +50,8 @@ class Yolo():
 
         for idx, out in enumerate(boxes):
 
-            box_confidences.append(boxes[idx][:, :, :, 4:5])
-            box_class_probs.append(boxes[idx][:, :, :, 5:])
+            box_confidences.append(self.sigmoid(outputs[idx][:, :, :, 4:5]))
+            box_class_probs.append(self.sigmoid(outputs[idx][:, :, :, 5:]))
 
             for grid_h in range(out.shape[0]):
                 for grid_w in range(out.shape[1]):
