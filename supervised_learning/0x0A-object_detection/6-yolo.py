@@ -318,21 +318,12 @@ class Yolo():
                               self.class_names[box_classes[idx]] + text,
                               pos_text, font, fontScale, color, thickness,
                               cv2.LINE_AA)
-        # Displaying the image
-        cv2.imshow(file_name, img)
 
-        # cv2.waitKey(0)
+        cv2.imshow(file_name, img)
         key = cv2.waitKey(0)
         if key == ord('s'):
-            # If detections does not exist, create it
             os.mkdir('detections') if not os.path.isdir('detections') else None
-
-            # Change the current directory
             os.chdir('detections')
-
-            # Using cv2.imwrite() method to save the image
             cv2.imwrite(file_name, img)
-
-            # Change back to working directory
             os.chdir('../')
             cv2.destroyAllWindows()
