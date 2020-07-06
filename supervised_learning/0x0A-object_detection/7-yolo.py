@@ -299,11 +299,11 @@ class Yolo():
             x, y, w, h = box
             point1 = (int(x), int(y))
             point2 = (int(w), int(h))
-            img = cv2.rectangle(image,
-                                point1,
-                                point2,
-                                color,
-                                2)
+            image = cv2.rectangle(image,
+                                  point1,
+                                  point2,
+                                  color,
+                                  2)
 
             # Font
             font = cv2.FONT_HERSHEY_SIMPLEX
@@ -314,12 +314,12 @@ class Yolo():
             color = (0, 0, 255)
 
             thickness = 1
-            img = cv2.putText(image,
-                              self.class_names[box_classes[idx]] + text,
-                              pos_text, font, fontScale, color, thickness,
-                              cv2.LINE_AA)
+            image = cv2.putText(image,
+                                self.class_names[box_classes[idx]] + text,
+                                pos_text, font, fontScale, color, thickness,
+                                cv2.LINE_AA)
         # Displaying the image
-        cv2.imshow(file_name, img)
+        cv2.imshow(file_name, image)
 
         # cv2.waitKey(0)
         key = cv2.waitKey(0)
@@ -331,7 +331,7 @@ class Yolo():
             os.chdir('detections')
 
             # Using cv2.imwrite() method to save the image
-            cv2.imwrite(file_name, img)
+            cv2.imwrite(file_name, image)
 
             # Change back to working directory
             os.chdir('../')
@@ -342,5 +342,36 @@ class Yolo():
         Predict
         :param folder_path:a string representing the path to the folder
          holding all the images to predict
-        :return:
+        :return: a tuple of (predictions, image_paths):
         """
+        predictions = []
+        images, image_paths = self.load_images(folder_path)
+        pimages, image_shapes = self.preprocess_images(images)
+
+        outputs = self.model.predict(pimages)
+
+        for i in range(pimages.shape[0]):
+            current_out = [out[i] for out in outputs]
+
+            boxes, box_confidences, box_class_probs = \
+                self.process_outputs(current_out, image_shapes[i])
+
+            filtered_boxes, box_classes, box_scores = \
+                self.filter_boxes(boxes, box_confidences, box_class_probs)
+
+            box_predictions, predicted_box_classes, predicted_box_scores = \
+                self.non_max_suppression(filtered_boxes,
+                                         box_classes,
+                                         box_scores)
+
+            file_name = image_paths[i].split('/')[-1]
+            self.show_boxes(images[i], box_predictions,
+                            predicted_box_classes,
+                            predicted_box_scores,
+                            file_name)
+
+            predictions.append((box_predictions,
+                                predicted_box_classes,
+                                predicted_box_scores))
+
+        return predictions, image_paths
