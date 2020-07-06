@@ -27,6 +27,7 @@ class Yolo():
     """
     Initialize Yolo v3
     """
+
     def __init__(self, model_path, classes_path, class_t, nms_t, anchors):
         """
         class constructor
@@ -73,7 +74,6 @@ class Yolo():
 
             for grid_h in range(out.shape[0]):
                 for grid_w in range(out.shape[1]):
-
                     # center of bounding box tx
                     tx = out[grid_h, grid_w, :, 0]
                     # center of bounding box ty
@@ -153,6 +153,24 @@ class Yolo():
 
         return filtered_boxes, box_classes, box_scores
 
+    @staticmethod
+    def iou(box1, box2):
+        """calculates intersection over union
+        (x1, y1, x2, y2)"""
+        xi1 = max(box1[0], box2[0])
+        yi1 = max(box1[1], box2[1])
+        xi2 = min(box1[2], box2[2])
+        yi2 = min(box1[3], box2[3])
+        inter_area = max(yi2 - yi1, 0) * max(xi2 - xi1, 0)
+
+        box1_area = (box1[3] - box1[1]) * (box1[2] - box1[0])
+        box2_area = (box2[3] - box2[1]) * (box2[2] - box2[0])
+        union_area = box1_area + box2_area - inter_area
+
+        iou = inter_area / union_area
+
+        return iou
+
     def non_max_suppression(self, filtered_boxes, box_classes, box_scores):
         """
         Non-max Suppression
@@ -170,35 +188,67 @@ class Yolo():
         :return:
         """
         # find the unique classes
-        idx_sort = np.lexsort((-box_scores, box_classes))
-        ordered_class = np.array([box_classes[idx] for idx in idx_sort])
-        ordered_scores = np.array([box_scores[idx] for idx in idx_sort])
-        ordered_boxes = np.array([filtered_boxes[idx] for idx in idx_sort])
+        # idx_sort = np.lexsort((-box_scores, box_classes))
+        # ordered_class = np.array([box_classes[idx] for idx in idx_sort])
+        # ordered_scores = np.array([box_scores[idx] for idx in idx_sort])
+        # ordered_boxes = np.array([filtered_boxes[idx] for idx in idx_sort])
+        #
+        # unique, number_clases = np.unique(ordered_class, return_counts=True)
+        # print()
+        # inf = 0
+        # class_of_class = []
+        # for sup in number_clases:
+        #     class_of_class.append(idx_sort[inf:sup + inf])
+        #     inf = sup
+        #
+        # idx_to_delete = []
+        # for class_box in class_of_class:
+        #     i = 0
+        #     for f_box in range(i, len(class_box)):
+        #         j = i + 1
+        #         for s_box in range(j, len(class_box)):
+        #             box1 = filtered_boxes[class_box[f_box]]
+        #             box2 = filtered_boxes[class_box[s_box]]
+        #             iou = self.iou(box1, box2)
+        #             if iou > self.nms_t:
+        #                 idx_to_delete.append(class_box[s_box])
+        #             else:
+        #                 continue
+        #         i += 1
+        # ordered_boxes = np.delete(ordered_boxes, idx_to_delete, axis=0)
+        # ordered_class = np.delete(ordered_class, idx_to_delete, axis=0)
+        # ordered_scores = np.delete(ordered_scores, idx_to_delete, axis=0)
+        # return ordered_boxes, ordered_class, ordered_scores
 
-        unique, number_clases = np.unique(ordered_class, return_counts=True)
-        print()
-        inf = 0
-        class_of_class = []
-        for sup in number_clases:
-            class_of_class.append(idx_sort[inf:sup + inf])
-            inf = sup
+        index = np.lexsort((-box_scores, box_classes))
 
-        idx_to_delete = []
-        for class_box in class_of_class:
-            i = 0
-            j = 1
-            for f_box in range(i, len(class_box)):
+        box_predictions = np.array([filtered_boxes[i] for i in index])
+        predicted_box_classes = np.array([box_classes[i] for i in index])
+        predicted_box_scores = np.array([box_scores[i] for i in index])
+
+        _, class_counts = np.unique(predicted_box_classes, return_counts=True)
+
+        i = 0
+        accumulated_count = 0
+
+        for class_count in class_counts:
+            while i < accumulated_count + class_count:
                 j = i + 1
-                for s_box in range(j, len(class_box)):
-                    box1 = filtered_boxes[f_box]
-                    box2 = filtered_boxes[s_box]
-                    iou = bb_iou(box1, box2)
-                    if iou > self.nms_t:
-                        idx_to_delete.append(class_box[s_box])
+                while j < accumulated_count + class_count:
+                    tmp = self.iou(box_predictions[i],
+                                   box_predictions[j])
+                    if tmp > self.nms_t:
+                        box_predictions = np.delete(box_predictions, j,
+                                                    axis=0)
+                        predicted_box_scores = np.delete(predicted_box_scores,
+                                                         j, axis=0)
+                        predicted_box_classes = (np.delete
+                                                 (predicted_box_classes,
+                                                  j, axis=0))
+                        class_count -= 1
                     else:
-                        continue
+                        j += 1
                 i += 1
-        ordered_boxes = np.delete(ordered_boxes, idx_to_delete, axis=0)
-        ordered_class = np.delete(ordered_class, idx_to_delete, axis=0)
-        ordered_scores = np.delete(ordered_scores, idx_to_delete, axis=0)
-        return ordered_boxes, ordered_class, ordered_scores
+            accumulated_count += class_count
+
+        return box_predictions, predicted_box_classes, predicted_box_scores
