@@ -2,6 +2,7 @@
 """ FaceAlign Class"""
 import dlib
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 class FaceAlign:
@@ -44,3 +45,22 @@ class FaceAlign:
             return dets[idx_max_area]
         except Exception:
             return None
+
+    def find_landmarks(self, image, detection):
+        """
+        Find Landmarks
+        :param image: is a numpy.ndarray of an image from
+         which to find facial landmarks
+        :param detection:  is a dlib.rectangle containing the
+         boundary box of the face in the image
+        :return: a numpy.ndarray of shape (p, 2)containing the
+         landmark points, or None on failure
+        """
+        try:
+            shape = self.shape_predictor(image, detection)
+        except Exception:
+            return None
+        a = np.ones((68, 2))
+        for idx in range(68):
+            a[idx] = (shape.part(idx).x, shape.part(idx).y)
+        return a
