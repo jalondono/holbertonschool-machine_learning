@@ -3,7 +3,7 @@
 from utils import load_images
 import matplotlib.pyplot as plt
 
-images, filenames = load_images('HBTN', as_array=False)
+images, filenames = load_images('HBTN', as_array=True)
 print(type(images), len(images))
 print(type(filenames), len(filenames))
 idx = filenames.index('KirenSrinivasan.jpg')

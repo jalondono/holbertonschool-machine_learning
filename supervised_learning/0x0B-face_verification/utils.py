@@ -3,6 +3,7 @@
 import glob
 import cv2
 import numpy as np
+import csv
 
 
 def load_images(images_path, as_array=True):
@@ -27,3 +28,24 @@ def load_images(images_path, as_array=True):
     else:
         imgs = np.array(imgs)
         return imgs, names
+
+
+def load_csv(csv_path, params={}):
+    """
+    Load CSV
+    :param csv_path: is the path to the csv to load
+    :param params: are the parameters to load the csv with
+    :return:  a list of lists representing the contents found in csv_path
+    """
+    # with open(csv_path, 'r') as f:
+    #     lines = [line.strip() for line in f]
+    #
+    # csv_list = [line.split(',') for line in lines]
+    #
+    # return csv_list
+    csv_list = []
+    with open(csv_path) as csv_file:
+        csv_reader = csv.reader(csv_file, delimiter=',', **params)
+        for row in csv_reader:
+            csv_list.append(row)
+    return csv_list
