@@ -3,6 +3,7 @@
 import dlib
 import matplotlib.pyplot as plt
 import numpy as np
+import cv2
 
 
 class FaceAlign:
@@ -64,3 +65,27 @@ class FaceAlign:
         for idx in range(68):
             a[idx] = (shape.part(idx).x, shape.part(idx).y)
         return a
+
+    def align(self, image, landmark_indices, anchor_points, size=96):
+        """
+        Align Faces
+        :param image: is a numpy.ndarray of rank 3 containing
+         the image to be aligned
+        :param landmark_indices:  is a numpy.ndarray of shape (3,)
+         containing the indices of the three landmark points that
+         should be used for the affine transformation
+        :param anchor_points: is a numpy.ndarray of shape (3, 2)
+         containing the destination points for the affine
+         transformation, scaled to the range [0, 1]
+        :param size: is the desired size of the aligned image
+        :return: a numpy.ndarray of shape (size, size, 3) containing
+         the aligned image, or None if no face is detected
+        """
+        rect = self.detect(image)
+        coords = self.find_landmarks(image, rect)
+        input_points = coords[landmark_indices]
+        input_points = input_points.astype('float32')
+        output_points = anchor_points * size
+        warp_mat = cv2.getAffineTransform(input_points, output_points)
+        warp_dst = cv2.warpAffine(image, warp_mat, (size, size))
+        return warp_dst
