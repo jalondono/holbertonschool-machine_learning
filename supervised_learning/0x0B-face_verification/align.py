@@ -11,7 +11,7 @@ class FaceAlign:
         """
         Class constructor
         :param shape_predictor_path:  is the path to the dlib
-         shape predictor model
+         shape preditor model
         """
         self.detector = dlib.get_frontal_face_detector()
         self.shape_predictor = dlib.shape_predictor(shape_predictor_path)
@@ -24,27 +24,21 @@ class FaceAlign:
         :return:  a dlib.rectangle containing the boundary box for
          the face in the image, or None on failure
         """
-        current_area = 0
-        idx_max_area = 0
-        height, width, c = image.shape
-        rectangle = dlib.rectangle(left=0,
-                                   top=0,
-                                   right=width,
-                                   bottom=height)
         try:
-            dets = self.detector(image, 1)
-            max_area = 0
-            if len(dets) == 0:
-                return rectangle
-            if len(dets) > 1:
-                for idx, det in enumerate(dets):
-                    x1, y1, x2, y2 = det
-                    current_area = (x2 - x1) * (y2 - y1)
-                    if current_area > max_area:
-                        max_area = current_area
-                        idx_max_area = idx
-            return dets[idx_max_area]
-        except Exception:
+            faces = self.detector(image, 1)
+            area = 0
+
+            for face in faces:
+                if face.area() > area:
+                    area = face.area()
+                    rect = face
+
+            if area == 0:
+                rect = (dlib.rectangle(left=0, top=0, right=image.shape[1],
+                                       bottom=image.shape[0]))
+
+            return rect
+        except RuntimeError:
             return None
 
     def find_landmarks(self, image, detection):
@@ -59,12 +53,12 @@ class FaceAlign:
         """
         try:
             shape = self.shape_predictor(image, detection)
-        except Exception:
+            a = np.ones((68, 2))
+            for idx in range(68):
+                a[idx] = (shape.part(idx).x, shape.part(idx).y)
+            return a
+        except RuntimeError:
             return None
-        a = np.ones((68, 2))
-        for idx in range(68):
-            a[idx] = (shape.part(idx).x, shape.part(idx).y)
-        return a
 
     def align(self, image, landmark_indices, anchor_points, size=96):
         """
