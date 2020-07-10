@@ -37,3 +37,14 @@ class TripletLoss(tensorflow.keras.layers.Layer):
         out3 = K.layers.Subtract()([out1, out2])
         loss = K.backend.maximum(out3 + self.alpha, 0)
         return loss
+
+    def call(self, inputs):
+        """
+        Call Triplet Loss
+        :param inputs:is a list containing the anchor, positive, and negative
+        output tensors from the last layer of the model, respectively
+        :return:
+        """
+        loss = self.triplet_loss(inputs)
+        self.add_loss(loss)
+        return loss

@@ -27,7 +27,7 @@ def load_images(images_path, as_array=True):
     if not as_array:
         return imgs, names
     else:
-        images = np.stack(imgs, axis=0)
+        imgs = np.stack(imgs, axis=0)
         return imgs, names
 
 
