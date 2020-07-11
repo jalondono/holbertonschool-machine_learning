@@ -50,3 +50,12 @@ class TrainModel:
                                        batch_size=batch_size,
                                        validation_split=validation_split,
                                        verbose=verbose)
+
+    def save(self, save_path):
+        """
+        saves the base embedding model:
+        :param save_path: is the path to save the model
+        :return: the saved model
+        """
+        tf.keras.models.save_model(self.base_model, save_path)
+        return self.base_model
