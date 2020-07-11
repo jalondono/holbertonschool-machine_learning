@@ -2,6 +2,8 @@
 """ TrainModel Class """
 import tensorflow as tf
 from triplet_loss import TripletLoss
+import tensorflow.keras as K
+import numpy as np
 
 
 class TrainModel:
@@ -59,3 +61,56 @@ class TrainModel:
         """
         tf.keras.models.save_model(self.base_model, save_path)
         return self.base_model
+
+    @staticmethod
+    def compute_tp_tn_fn_fp(y_true, y_pred):
+        TP = sum((y_true == 1) & (y_pred == 1))
+        TN = sum((y_true == 0) & (y_pred == 0))
+        FN = sum((y_true == 1) & (y_pred == 0))
+        FP = sum((y_true == 0) & (y_pred == 1))
+        return TP, TN, FN, FP
+
+    @staticmethod
+    def f1_score(y_true, y_pred):
+        """
+        calculates the F1 score of predictions
+        :param y_pred:  a numpy.ndarray of shape (m,)
+        containing the correct labels
+        :return:The f1 score
+        """
+        TP, TN, FN, FP = TrainModel.compute_tp_tn_fn_fp(y_true, y_pred)
+        if TP + FP == 0:
+            return 0
+        else:
+            precision = TP / (TP + FP)
+
+        if (TP + FN) == 0:
+            return 0
+        else:
+            recall = TP / (TP + FN)
+        f1 = 2 * precision * recall / (precision + recall)
+
+        return f1
+
+    @staticmethod
+    def accuracy(y_true, y_pred):
+        """
+         calculates the Accuracy score of predictions
+        :param y_pred: a numpy.ndarray of shape (m,)
+        containing the correct labels
+        :return: the accuracy
+        """
+        TP, TN, FN, FP = TrainModel.compute_tp_tn_fn_fp(y_true, y_pred)
+        accuracy = (TP + TN) / (TP + FN + TN + FP)
+
+        return accuracy
+
+    def best_tau(self, images, identities, thresholds):
+        """
+        calculates the best tau to use for a maximal F1 score
+        :param images: a numpy.ndarray of shape (m, n, n, 3)
+         containing the aligned images for testing
+        :param identities:  a list containing the identities of each image in images
+        :param thresholds: a 1D numpy.ndarray of distance thresholds (tau) to test
+        :return: (tau, f1, acc)
+        """
