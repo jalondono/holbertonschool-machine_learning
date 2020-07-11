@@ -13,6 +13,7 @@ identities = [re.sub('[0-9]', '', f[:-4]) for f in filenames]
 print(set(identities))
 thresholds = np.linspace(0.05, 1, 96)
 tm = TrainModel('models/face_verification.h5', 0.2)
+print(tm.summary())
 tau, f1, acc = tm.best_tau(images, identities, thresholds)
 print(tau)
 print(f1)

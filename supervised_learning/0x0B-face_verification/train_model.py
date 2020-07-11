@@ -114,3 +114,6 @@ class TrainModel:
         :param thresholds: a 1D numpy.ndarray of distance thresholds (tau) to test
         :return: (tau, f1, acc)
         """
+        a = np.expand_dims(images[0], axis=0)
+        pred = self.base_model.predict(images)
+        print()
