@@ -87,8 +87,9 @@ def generate_triplets(images, filenames, triplet_names):
     :return: Returns: a list [A, P, N]
     """
     A, P, N = [], [], []
-    try:
-        for trip in triplet_names:
+
+    for trip in triplet_names:
+        try:
             A_idx = filenames.index(trip[0] + '.jpg')
             P_idx = filenames.index(trip[1] + '.jpg')
             N_idx = filenames.index(trip[2] + '.jpg')
@@ -96,6 +97,6 @@ def generate_triplets(images, filenames, triplet_names):
             A.append(images[A_idx])
             P.append(images[P_idx])
             N.append(images[N_idx])
-    except Exception:
-        pass
+        except Exception:
+            pass
     return [np.array(A), np.array(P), np.array(N)]

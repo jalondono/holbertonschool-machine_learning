@@ -15,7 +15,6 @@ class TrainModel:
         """
         with tf.keras.utils.CustomObjectScope({'tf': tf}):
             self.base_model = tf.keras.models.load_model(model_path)
-            print(self.base_model.summary())
 
         A = tf.keras.Input(shape=(96, 96, 3))
         P = tf.keras.Input(shape=(96, 96, 3))
@@ -32,3 +31,22 @@ class TrainModel:
         my_model = tf.keras.models.Model([A, P, N], out)
         my_model.compile(optimizer='adam')
         self.training_model = my_model
+
+    def train(self, triplets, epochs=5, batch_size=32,
+              validation_split=0.3, verbose=True):
+        """
+        that trains self.training_model:
+        :param self:
+        :param triplets: is a list of numpy.ndarrayscontaining the
+         inputs to self.training_model
+        :param epochs: is the number of epochs to train for
+        :param batch_size:  is the batch size for training
+        :param validation_split:  is the validation split for training
+        :param verbose: is a boolean that sets the verbosity mode
+        :return: the History output from the training
+        """
+        return self.training_model.fit(triplets,
+                                       epochs=epochs,
+                                       batch_size=batch_size,
+                                       validation_split=validation_split,
+                                       verbose=verbose)
