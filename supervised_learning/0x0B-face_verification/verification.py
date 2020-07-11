@@ -54,4 +54,3 @@ class FaceVerification:
             return self.identities[idx], distances[idx]
         else:
             return None, None
-
