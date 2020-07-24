@@ -56,12 +56,26 @@ def minor(matrix):
     :param matrix: list of lists whose minor matrix should be calculated
     :return:
     """
-    if check_shape(matrix) == 3:
-        return 1
-    if check_shape(matrix) == 2:
-        raise TypeError("matrix must be a list of lists")
-    if check_shape(matrix) == 1:
-        raise ValueError("matrix must be a non-empty square matrix")
+
+    err = 'matrix must be a list of lists'
+    if not isinstance(matrix, list) or len(matrix) == 0:
+        raise TypeError(err)
+
+    for element in matrix:
+        if not isinstance(element, list):
+            raise TypeError(err)
+
+    err = 'matrix must be a non-empty square matrix'
+    my_len = len(matrix)
+    if my_len == 1 and len(matrix[0]) == 0:
+        raise ValueError(err)
+
+    for element in matrix:
+        if len(element) != my_len:
+            raise ValueError(err)
+
+    if my_len == 1:
+        return [[1]]
 
     if len(matrix) == 1:
         return [[1]]
