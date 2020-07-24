@@ -3,7 +3,11 @@
 
 
 def check_shape(matrix):
-    # 0 for True , 1 for Bad not matrix square,2 for not list of list
+    """
+    Check if is a correct matrix
+    :param matrix: matrix list
+    :return:
+    """
     if len(matrix):
         if not len(matrix[0]):
             return 3
@@ -26,7 +30,7 @@ def determinant(matrix):
     if check_shape(matrix) == 2:
         raise TypeError("matrix must be a list of lists")
     if check_shape(matrix) == 1:
-        raise TypeError("matrix must be a square matrix")
+        raise ValueError("matrix must be a square matrix")
 
     if len(matrix) == 1:
         return matrix[0][0]
