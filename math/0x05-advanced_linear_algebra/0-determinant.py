@@ -11,7 +11,7 @@ def check_shape(matrix):
     if len(matrix):
         if not len(matrix[0]):
             return 3
-    if not isinstance(matrix, list)  or len(matrix) == 0:
+    if not isinstance(matrix, list) or len(matrix) == 0:
         return 2
     for row in matrix:
         if len(row) != len(matrix):
