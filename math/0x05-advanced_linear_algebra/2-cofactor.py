@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Determinant"""
+"""Cofactor"""
 
 
 def check_shape(matrix):
@@ -88,3 +88,24 @@ def minor(matrix):
             out_det.append(det)
         final_mdet.append(out_det)
     return final_mdet
+
+
+def cofactor(matrix):
+    """
+    calculates the cofactor matrix of a matrix:
+    :param matrix: list of lists whose cofactor matrix should be calculated
+    :return: the cofactor matrix of matrix
+    """
+    my_len = len(matrix)
+
+    my_minor = minor(matrix)
+
+    my_cofactor = []
+    for i in range(my_len):
+        my_cofactor.append([])
+        for j in range(my_len):
+            sign = (-1) ** (i + j)
+            value = sign * my_minor[i][j]
+            my_cofactor[i].append(value)
+
+    return my_cofactor
