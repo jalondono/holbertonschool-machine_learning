@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 """Determinant"""
-import numpy as np
 
 
 def check_shape(matrix):
