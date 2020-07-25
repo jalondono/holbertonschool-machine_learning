@@ -128,9 +128,26 @@ def inverse(matrix):
     :param matrix: is a list of lists whose inverse should be calculated
     :return: the inverse of matrix, or None if matrix is singula
     """
-    my_det = determinant(matrix)
-    my_adj = adjugate(matrix)
-    if my_det == 0:
+
+    err = 'matrix must be a list of lists'
+    if not isinstance(matrix, list) or len(matrix) == 0:
+        raise TypeError(err)
+
+    for element in matrix:
+        if not isinstance(element, list):
+            raise TypeError(err)
+
+    err = 'matrix must be a non-empty square matrix'
+    my_len = len(matrix)
+    if my_len == 1 and len(matrix[0]) == 0:
+        raise ValueError(err)
+
+    for element in matrix:
+        if len(element) != my_len:
+            raise ValueError(err)
+    det = determinant(matrix)
+    adj = adjugate(matrix)
+    if det == 0:
         return None
-    inv_m = [[value / my_det for value in row] for row in my_adj]
+    inv_m = [[value / det for value in row] for row in adj]
     return inv_m
