@@ -113,7 +113,7 @@ def cofactor(matrix):
 
 def adjugate(matrix):
     """
-    is a list of lists whose adjugate matrix should be calculated
+    is a list of lists whose adjugate matrix should be calulated
     :param matrix:
     :return:
     """
