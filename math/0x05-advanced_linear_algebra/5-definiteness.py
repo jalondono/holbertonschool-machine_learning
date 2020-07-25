@@ -28,7 +28,7 @@ def definiteness(matrix):
     if not np.array_equal(transpose, matrix):
         return None
 
-    # list of sub matrices for upper left determinants calculation
+    # list of sub matrices for upper left determinants calculatio
     sub_matrices = [matrix[:i, :i] for i in range(1, my_len + 1)]
 
     # n upper left determinants
