@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 """Initialize """
 import numpy as np
-mean_cov = __import__('0-mean_cov').mean_cov
-# corr = __import__('1-correlation').correlation
 
 
 class MultiNormal:
+    """
+    Multinormal class
+    """
+
     def __init__(self, data):
         """
         represents a Multivariate Normal distribution
