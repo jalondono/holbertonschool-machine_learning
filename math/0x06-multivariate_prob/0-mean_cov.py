@@ -9,7 +9,7 @@ def mean_cov(X):
     :param X:
     :return:
     """
-    if len(X.shape) != 2:
+    if not isinstance(X, np.ndarray) or len(X.shape) != 2:
         raise TypeError(' must be a 2D numpy.ndarray')
     if X.shape[0] < 2:
         raise ValueError('X must contain multiple data points')
