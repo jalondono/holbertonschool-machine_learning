@@ -12,18 +12,14 @@ class MultiNormal:
         :param data: is a numpy.ndarray of shape (d, n)
         containing the data set:
         """
-        if not isinstance(data, np.ndarray):
+        if not isinstance(data, np.ndarray) or len(data.shape) != 2:
             raise TypeError('data must be a 2D numpy.ndarray')
-        if len(data.shape) != 2:
-            err = 'data must contain multiple data points'
-            raise ValueError(err)
         d, n = data.shape
-
         if n < 2:
             err = 'data must contain multiple data points'
             raise ValueError(err)
 
         self.mean = np.mean(data, axis=1).reshape(d, 1)
 
-        deviaton = data - self.mean
-        self.cov = np.matmul(deviaton, deviaton.T) / (n - 1)
+        dev = data - self.mean
+        self.cov = np.matmul(dev, dev.T) / (n - 1)
