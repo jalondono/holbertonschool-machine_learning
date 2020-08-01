@@ -24,3 +24,4 @@ def likelihood(x, n, P):
         raise ValueError("x cannot be greater than n")
     if np.amin(P) < 0 or np.amax(P) > 1:
         raise ValueError("All values in P must be in the range [0, 1]")
+    return P
