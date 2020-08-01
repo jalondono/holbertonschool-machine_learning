@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
-"""Intersection"""
+"""Marginal Probability"""
 import numpy as np
 
 
-def intersection(x, n, P, Pr):
+def marginal(x, n, P, Pr):
     """
-    calculates the intersection of obtaining this
-    data with the various hypothetical robabilities:
+    calculates the marginal probabiity of obtaining the data:
     :param x:
     :param n:
     :param P:
