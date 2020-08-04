@@ -3,8 +3,6 @@
 
 import numpy as np
 
-initialize = __import__('0-initialize').initialize
-
 
 def kmeans(X, k, iterations=1000):
     """
@@ -27,7 +25,7 @@ def kmeans(X, k, iterations=1000):
     min_value = np.amin(X, axis=0)
     max_value = np.amax(X, axis=0)
 
-    cents = initialize(X, k)
+    cents = np.random.uniform(min_value, max_value, (k, d))
     cents_pev = np.copy(cents)
     centroids_axis = cents.T[np.newaxis, :, :]
 
