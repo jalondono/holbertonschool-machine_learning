@@ -51,5 +51,6 @@ def expectation_maximization(X, k, iterations=1000, tol=1e-5,
             pi, m, S = maximization(X, g)
             if log_likelihood - init_log_likelihood <= tol:
                 tol_off = True
-            init_log_likelihood = log_likelihood
+            if not tol_off:
+                init_log_likelihood = log_likelihood
     return pi, m, S, g, init_log_likelihood
