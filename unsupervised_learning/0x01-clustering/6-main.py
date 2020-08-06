@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import numpy as np
-initialize = __import__('4-initialize').initialize
 expectation = __import__('6-expectation').expectation
 
 if __name__ == '__main__':
@@ -12,8 +11,10 @@ if __name__ == '__main__':
     d = np.random.multivariate_normal([20, 70], [[35, 10], [10, 35]], size=1000)
     X = np.concatenate((a, b, c, d), axis=0)
     np.random.shuffle(X)
-    pi, m, S = initialize(X, 4)
+    pi = np.array([0.75, 0.075, 0.075, 0.1])
+    m = np.array([[28, 42], [4, 23], [65, 31], [21, 65]])
+    S = np.array([[[70, 5], [5, 70]], [[15, 10], [10, 15]], [[15, 0], [0, 15]], [[30, 10], [10, 30]]])
     g, l = expectation(X, pi, m, S)
     print(g)
-    print(np.sum(g, axis=0))
+    print(g.shape)
     print(l)
