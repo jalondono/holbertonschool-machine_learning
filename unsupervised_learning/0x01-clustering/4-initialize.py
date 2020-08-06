@@ -12,9 +12,9 @@ def initialize(X, k):
     :param k: is a positive integer containing the number of clusters
     :return: pi, m, S, or None, None, None on failure
     """
-    if not isinstance(k, int) or k <= 0 or k >= X.shape[0]:
+    if not isinstance(X, np.ndarray) or len(X.shape) != 2:
         return None, None, None
-    if len(X.shape) != 2 or not isinstance(X, np.ndarray):
+    if type(k) != int or k <= 0 or k >= X.shape[0]:
         return None, None, None
 
     n, d = X.shape
