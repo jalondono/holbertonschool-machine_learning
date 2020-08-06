@@ -38,7 +38,6 @@ def expectation_maximization(X, k, iterations=1000, tol=1e-5,
     tol_off = False
     pi, m, S = initialize(X, k)
     g, init_log_likelihood = expectation(X, pi, m, S)
-    pi, m, S = maximization(X, g)
 
     for i in range(iterations + 1):
         if i == 0 or i % 10 == 0 or tol_off and verbose:
@@ -47,8 +46,8 @@ def expectation_maximization(X, k, iterations=1000, tol=1e-5,
             if tol_off:
                 break
         if i != iterations:
-            g, log_likelihood = expectation(X, pi, m, S)
             pi, m, S = maximization(X, g)
+            g, log_likelihood = expectation(X, pi, m, S)
             if log_likelihood - init_log_likelihood <= tol:
                 tol_off = True
             if not tol_off:
