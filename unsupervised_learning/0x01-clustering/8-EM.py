@@ -41,7 +41,7 @@ def expectation_maximization(X, k, iterations=1000, tol=1e-5,
     prev_l = 0
 
     for i in range(iterations + 1):
-        if i == 0 or i % 10 == 0 or tol_off and verbose:
+        if (i == 0 or i % 10 == 0 or tol_off) and verbose:
             print('Log Likelihood after {} '
                   'iterations: {}'.format(i, l.round(5)))
             if tol_off:
