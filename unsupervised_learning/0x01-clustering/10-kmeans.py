@@ -2,7 +2,6 @@
 """ Hello, sklearn!"""
 
 import sklearn.cluster
-import numpy as np
 
 
 def kmeans(X, k):
@@ -12,7 +11,7 @@ def kmeans(X, k):
     :param k: is the number of clusters
     :return: C, clss
     """
-    if not isinstance(X, np.ndarray) or len(X.shape) != 2:
+    if len(X.shape) != 2:
         return None, None
     if type(k) != int or k <= 0 or X.shape[0] < k:
         return None, None
