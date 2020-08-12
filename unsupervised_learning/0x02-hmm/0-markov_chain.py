@@ -30,6 +30,6 @@ def markov_chain(P, s, t=1):
         return None
 
     prob_state = np.copy(s)
-    for idx in range(t):
-        prob_state = np.matmul(prob_state, P)
+    power_matrix = np.linalg.matrix_power(P, t)
+    prob_state = np.matmul(prob_state, power_matrix)
     return prob_state
