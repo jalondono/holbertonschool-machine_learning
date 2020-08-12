@@ -31,11 +31,11 @@ def regular(P):
         p_list.append(p_aux)
         idx += 1
     S = np.zeros(n)
-    I = np.identity(n)
+    ident = np.identity(n)
 
     # S(P-I) = 0
     # (P-I).T * S.T
-    P_I = (P-I).T
+    P_I = (P-ident).T
     P_I[-1] = np.ones(n)
     S[-1] = 1
     result = np.linalg.solve(P_I, S).reshape(1, n)
