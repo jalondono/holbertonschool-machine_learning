@@ -8,7 +8,7 @@ def viterbi(Observation, Emission, Transition, Initial):
         hidden markov model:
         - Observation is a numpy.ndarray of shape (T,) that contains
             the index of the observation
-            - T is the number of observations
+            - T is the number of observation
         - Emission is a numpy.ndarray of shape (N, M) containing the
             emission probability of a specific observation given a
             hidden state

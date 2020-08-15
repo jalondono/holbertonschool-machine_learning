@@ -6,7 +6,7 @@ import numpy as np
 def backward(Observation, Emission, Transition, Initial):
     """  performs the backward algorithm for a hidden markov model:
         - Observation is a numpy.ndarray of shape (T,) that contains
-            the index of the observation
+            the index of the bservation
             - T is the number of observations
         - Emission is a numpy.ndarray of shape (N, M) containing the
             emission probability of a specific observation given a
