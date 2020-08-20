@@ -24,7 +24,7 @@ class GaussianProcess:
 
     def kernel(self, X1, X2):
         """
-
+        that calculates the covariance kernel matrix between two matrices:
         :param X1: is a numpy.ndarray of shape (m, 1)
         :param X2: is a numpy.ndarray of shape (n, 1)
         the kernel should use the Radial Basis Function (RBF)
