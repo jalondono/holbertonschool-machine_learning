@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
-""""Vanilla" Autoencoder"""
+""""Sparse Autoencoder"""
 
 import tensorflow.keras as Keras
 
 
-def autoencoder(input_dims, hidden_layers, latent_dims):
+def sparse(input_dims, hidden_layers, latent_dims, lambtha):
     """
-    creates an autoencoder:
+    creates a sparse autoencoder::
+    :param lambtha:  is the regularization parameter used for L1
+    regularization on the encoded output
     :param input_dims: is an integer containing the dimensions of
      the model input
     :param hidden_layers: is a list containing the number of nodes
@@ -18,16 +20,19 @@ def autoencoder(input_dims, hidden_layers, latent_dims):
     :return: encoder, decoder, auto
     """
     # encoder
+    regularizer = Keras.regularizers.l1(lambtha)
     inp = Keras.Input(shape=(input_dims,))
     encoder = Keras.layers.Dense(units=hidden_layers[0],
-                                 activation='relu')(inp)
+                                 activation='relu',
+                                 activity_regularizer=regularizer)(inp)
     for layer in range(1, len(hidden_layers)):
         encoder = Keras.layers.Dense(units=hidden_layers[layer],
-                                     activation='relu')(encoder)
+                                     activation='relu',
+                                     activity_regularizer=regularizer)(encoder)
     last = Keras.layers.Dense(units=latent_dims,
-                              activation='relu')(encoder)
+                              activation='relu',
+                              activity_regularizer=regularizer)(encoder)
     encoder = Keras.Model(inputs=inp, outputs=last)
-    # encoder.summary()
 
     # decoder
     rev_hid_layers = hidden_layers[::-1]
