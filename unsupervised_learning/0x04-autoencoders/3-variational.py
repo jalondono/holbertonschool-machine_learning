@@ -68,7 +68,8 @@ def autoencoder(input_dims, hidden_layers, latent_dims):
         reconstruction_loss = keras.backend.binary_crossentropy(y_in, y_out)
         reconstruction_loss = keras.backend.sum(reconstruction_loss,
                                                 axis=1)
-        kl_loss = (1 + z_var - keras.backend.square(z_mean) - keras.backend.exp(z_var))
+        kl_loss = (1 + z_var - keras.backend.square(z_mean) -
+                   keras.backend.exp(z_var))
         kl_loss = -0.5 * keras.backend.sum(kl_loss, axis=1)
         return reconstruction_loss + kl_loss
 
