@@ -22,18 +22,19 @@ def sparse(input_dims, hidden_layers, latent_dims, lambtha):
     # encoder
     regularizer = Keras.regularizers.l1(lambtha)
     inp = Keras.Input(shape=(input_dims,))
+
     encoder = Keras.layers.Dense(units=hidden_layers[0],
-                                 activation='relu',
-                                 activity_regularizer=regularizer)(inp)
+                                 activation='relu')(inp)
+
     for layer in range(1, len(hidden_layers)):
         encoder = Keras.layers.Dense(units=hidden_layers[layer],
-                                     activation='relu',
-                                     activity_regularizer=regularizer)(encoder)
+                                     activation='relu')(encoder)
+
     encoder = Keras.layers.Dense(units=latent_dims,
                               activation='relu',
                               activity_regularizer=regularizer)(encoder)
+
     encoder = Keras.Model(inputs=inp, outputs=encoder)
-    encoder.summary()
 
     # decoder
     rev_hid_layers = hidden_layers[::-1]
