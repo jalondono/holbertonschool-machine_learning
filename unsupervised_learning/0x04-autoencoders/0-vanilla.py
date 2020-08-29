@@ -27,7 +27,7 @@ def autoencoder(input_dims, hidden_layers, latent_dims):
     encoder = Keras.layers.Dense(units=latent_dims,
                               activation='relu')(encoder)
     encoder = Keras.Model(inputs=inp, outputs=encoder)
-    encoder.summary()
+    # encoder.summary()
 
     # decoder
     rev_hid_layers = hidden_layers[::-1]
