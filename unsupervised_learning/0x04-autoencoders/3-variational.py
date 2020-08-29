@@ -34,26 +34,27 @@ def autoencoder(input_dims, hidden_layers, latent_dims):
     # encoder
     enc_input = keras.Input(shape=(input_dims,))
     enc_hidden = keras.layers.Dense(units=hidden_layers[0],
-                                activation='relu')(enc_input)
+                                    activation='relu')(enc_input)
     for i in range(1, len(hidden_layers)):
         enc_hidden = keras.layers.Dense(hidden_layers[i],
-                                    activation='relu')(enc_hidden)
+                                        activation='relu')(enc_hidden)
 
     z_mean = keras.layers.Dense(latent_dims)(enc_hidden)
     z_var = keras.layers.Dense(latent_dims)(enc_hidden)
-    z = keras.layers.Lambda(sampling, output_shape=(latent_dims,))([z_mean, z_var])
+    z = keras.layers.Lambda(sampling,
+                            output_shape=(latent_dims,))([z_mean, z_var])
 
     # decoder
     dec_input = keras.Input(shape=(latent_dims,))
     dec_hidden = keras.layers.Dense(hidden_layers[-1],
-                                activation='relu')(dec_input)
+                                    activation='relu')(dec_input)
 
     for i in range(len(hidden_layers) - 2, -1, -1):
         dec_hidden = keras.layers.Dense(hidden_layers[i],
-                                    activation='relu')(dec_hidden)
+                                        activation='relu')(dec_hidden)
 
     dec_hidden = keras.layers.Dense(input_dims,
-                                activation='sigmoid')(dec_hidden)
+                                    activation='sigmoid')(dec_hidden)
 
     encoder = keras.models.Model(inputs=enc_input, outputs=[z, z_mean, z_var])
     decoder = keras.models.Model(inputs=dec_input, outputs=dec_hidden)
@@ -65,7 +66,8 @@ def autoencoder(input_dims, hidden_layers, latent_dims):
     def loss(y_in, y_out):
         """ custom loss function """
         reconstruction_loss = keras.backend.binary_crossentropy(y_in, y_out)
-        reconstruction_loss = keras.backend.sum(reconstruction_loss, axis=1)
+        reconstruction_loss = keras.backend.sum(reconstruction_loss,
+                                                axis=1)
         kl_loss = (1 + z_var - keras.backend.square(z_mean) - keras.backend.exp(z_var))
         kl_loss = -0.5 * keras.backend.sum(kl_loss, axis=1)
         return reconstruction_loss + kl_loss
