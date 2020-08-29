@@ -66,14 +66,12 @@ def autoencoder(input_dims, filters, latent_dims):
                             activation='sigmoid',
                             padding='same')(y)
     decoder = Keras.Model(inputs=dec_inp, outputs=y)
-    decoder.summary()
 
     # AutoEncoder
     input_auto = Keras.Input(shape=input_dims)
     encoderOut = encoder(input_auto)
     decoderOut = decoder(encoderOut)
     auto = Keras.models.Model(inputs=input_auto, outputs=decoderOut)
-    auto.summary()
 
     auto.compile(optimizer=Keras.optimizers.Adam(),
                  loss='binary_crossentropy')
