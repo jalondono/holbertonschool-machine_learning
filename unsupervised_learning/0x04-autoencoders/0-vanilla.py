@@ -20,12 +20,14 @@ def autoencoder(input_dims, hidden_layers, latent_dims):
     # encoder
     inp = Keras.Input(shape=(input_dims,))
     encoder = Keras.layers.Dense(units=hidden_layers[0],
-                                 activation='relu')(inp)
+                                 activation='relu',
+                                 input_shape=(input_dims,)
+                                 )(inp)
     for layer in range(1, len(hidden_layers)):
         encoder = Keras.layers.Dense(units=hidden_layers[layer],
                                      activation='relu')(encoder)
     encoder = Keras.layers.Dense(units=latent_dims,
-                              activation='relu')(encoder)
+                                 activation='relu')(encoder)
     encoder = Keras.Model(inputs=inp, outputs=encoder)
     # encoder.summary()
 
