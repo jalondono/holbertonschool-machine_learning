@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """"Vanilla" Autoencoder"""
 
-import tensorflow.keras as Keras
+import tensorflow.keras as keras
 
 
 def autoencoder(input_dims, hidden_layers, latent_dims):
@@ -18,37 +18,61 @@ def autoencoder(input_dims, hidden_layers, latent_dims):
     :return: encoder, decoder, auto
     """
     # encoder
-    inp = Keras.Input(shape=(input_dims,))
-    encoder = Keras.layers.Dense(units=hidden_layers[0],
-                                 activation='relu',
-                                 input_shape=(input_dims,)
-                                 )(inp)
-    for layer in range(1, len(hidden_layers)):
-        encoder = Keras.layers.Dense(units=hidden_layers[layer],
-                                     activation='relu')(encoder)
-    encoder = Keras.layers.Dense(units=latent_dims,
-                                 activation='relu')(encoder)
-    encoder = Keras.Model(inputs=inp, outputs=encoder)
+    # inp = Keras.Input(shape=(input_dims,))
+    # encoder = Keras.layers.Dense(units=hidden_layers[0],
+    #                              activation='relu',
+    #                              input_shape=(input_dims,)
+    #                              )(inp)
+    # for layer in range(1, len(hidden_layers)):
+    #     encoder = Keras.layers.Dense(units=hidden_layers[layer],
+    #                                  activation='relu')(encoder)
+    # encoder = Keras.layers.Dense(units=latent_dims,
+    #                              activation='relu')(encoder)
+    # encoder = Keras.Model(inputs=inp, outputs=encoder)
+    #
+    # # decoder
+    # rev_hid_layers = hidden_layers[::-1]
+    # dec_input = Keras.Input(shape=(latent_dims,))
+    # decoder = Keras.layers.Dense(units=rev_hid_layers[0],
+    #                              activation='relu')(dec_input)
+    # for layer in reversed(rev_hid_layers[1:]):
+    #     decoder = Keras.layers.Dense(units=layer,
+    #                                  activation='relu')(decoder)
+    #
+    # decoder = Keras.layers.Dense(units=input_dims,
+    #                              activation='sigmoid')(decoder)
+    # decoder = Keras.Model(inputs=dec_input, outputs=decoder)
+    #
+    # # auto encoder
+    # autoencod_bottleneck = encoder.layers[-1].output
+    # autoencod_output = decoder(autoencod_bottleneck)
+    #
+    # auto = Keras.Model(inputs=inp, outputs=autoencod_output)
+    #
+    # auto.compile(optimizer=Keras.optimizers.Adam(),
+    #              loss='binary_crossentropy')
+    # return encoder, decoder, auto
 
-    # decoder
-    rev_hid_layers = hidden_layers[::-1]
-    dec_input = Keras.Input(shape=(latent_dims,))
-    decoder = Keras.layers.Dense(units=rev_hid_layers[0],
-                                 activation='relu')(dec_input)
-    for layer in reversed(rev_hid_layers[1:]):
-        decoder = Keras.layers.Dense(units=layer,
-                                     activation='relu')(decoder)
+    encoder_input = keras.layers.Input(shape=(input_dims,))
+    prev = encoder_input
+    for i in hidden_layers:
+        tmp = keras.layers.Dense(i, activation='relu')(prev)
+        prev = tmp
+    bottleneck = keras.layers.Dense(latent_dims, activation='relu')(prev)
+    encoder = keras.models.Model(encoder_input, bottleneck)
 
-    decoder = Keras.layers.Dense(units=input_dims,
-                                 activation='sigmoid')(decoder)
-    decoder = Keras.Model(inputs=dec_input, outputs=decoder)
+    decoder_input = keras.layers.Input(shape=(latent_dims,))
+    prev = decoder_input
+    for i in hidden_layers[::-1]:
+        tmp = keras.layers.Dense(i, activation='relu')(prev)
+        prev = tmp
+    output_layer = keras.layers.Dense(input_dims, activation='sigmoid')(prev)
+    decoder = keras.models.Model(decoder_input, output_layer)
 
-    # auto encoder
-    autoencod_bottleneck = encoder.layers[-1].output
-    autoencod_output = decoder(autoencod_bottleneck)
+    input_layer = keras.layers.Input(shape=(input_dims,))
+    encoder_out = encoder(input_layer)
+    decoder_out = decoder(encoder_out)
+    auto = keras.models.Model(input_layer, decoder_out)
+    auto.compile(optimizer='adam', loss='binary_crossentropy')
 
-    auto = Keras.Model(inputs=inp, outputs=autoencod_output)
-
-    auto.compile(optimizer=Keras.optimizers.Adam(),
-                 loss='binary_crossentropy')
     return encoder, decoder, auto
