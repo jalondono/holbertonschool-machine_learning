@@ -34,8 +34,8 @@ class RNNCell:
         * y is the output of the cell
         """
         # using h(t) or next_t = tanh(Wh[x^(t);h^(t-1)] + bh
-        a = np.concatenate((x_t, h_prev), axis=1)
+        a = np.concatenate((h_prev, x_t), axis=1)
         h_next = np.tanh(np.matmul(a, self.Wh) + self.bh)
-        y = np.matmul(h_prev, self.Wy) + self.by
+        y = np.matmul(h_next, self.Wy) + self.by
         y = self.softmax(y)
         return h_next, y
