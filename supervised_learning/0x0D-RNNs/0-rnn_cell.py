@@ -36,6 +36,5 @@ class RNNCell:
         # using h(t) or next_t = tanh(Wh[x^(t);h^(t-1)] + bh
         a = np.concatenate((h_prev, x_t), axis=1)
         h_next = np.tanh(np.matmul(a, self.Wh) + self.bh)
-        y = np.matmul(h_next, self.Wy) + self.by
-        y = self.softmax(y)
+        y = self.softmax(np.matmul(h_next, self.Wy) + self.by)
         return h_next, y
