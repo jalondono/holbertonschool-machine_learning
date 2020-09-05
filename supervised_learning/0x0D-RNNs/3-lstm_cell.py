@@ -6,6 +6,7 @@ import numpy as np
 
 class LSTMCell:
     """LSTMCell Class"""
+
     def __init__(self, i, h, o):
         """
         Constructor method
@@ -26,15 +27,14 @@ class LSTMCell:
         self.bo = np.zeros((1, h))
         self.by = np.zeros((1, o))
 
-
     def sigmoid(self, Z):
-            """
+        """
             Sigmoid activation function
             :param Z: is the array of W.X + b values
             :return: Y predicted
             """
-            sigma = (1 / (1 + np.exp(-Z)))
-            return sigma
+        sigma = (1 / (1 + np.exp(-Z)))
+        return sigma
 
     def softmax(self, x):
         """softmax function"""
