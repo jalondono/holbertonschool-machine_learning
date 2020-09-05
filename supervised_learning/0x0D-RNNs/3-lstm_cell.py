@@ -13,7 +13,7 @@ class LSTMCell:
         :param h: is the dimensionality of the hidden state
         :param o: is the dimensionality of the outputs
         """
-        self.Wf = np.random.randn(i + h, h)
+        self.Wf = np.random.normal(size=(i + h, h))
         self.Wu = np.random.randn(i + h, h)
         self.Wc = np.random.randn(i + h, h)
         self.Wo = np.random.randn(i + h, h)
