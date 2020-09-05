@@ -18,20 +18,23 @@ class LSTMCell:
         self.Wc = np.random.normal(size=(i + h, h))
         self.Wo = np.random.normal(size=(i + h, h))
         self.Wy = np.random.normal(size=(h, o))
+
+        # Biases of the cell
         self.bf = np.zeros((1, h))
         self.bu = np.zeros((1, h))
         self.bc = np.zeros((1, h))
-        self.bo = np.zeros((1, o))
+        self.bo = np.zeros((1, h))
         self.by = np.zeros((1, o))
 
+
     def sigmoid(self, Z):
-        """
-        Sigmoid activation function
-        :param Z: is the array of W.X + b values
-        :return: Y predicted
-        """
-        sigma = (1 / (1 + np.exp(-Z)))
-        return sigma
+            """
+            Sigmoid activation function
+            :param Z: is the array of W.X + b values
+            :return: Y predicted
+            """
+            sigma = (1 / (1 + np.exp(-Z)))
+            return sigma
 
     def softmax(self, x):
         """softmax function"""
