@@ -4,6 +4,8 @@ import tensorflow as tf
 import numpy as np
 generator = __import__("0-generator").generator
 discriminator = __import__("1-discriminator").discriminator
+train_discriminator = __import__('2-train_discriminator').train_discriminator
+train_generator = __import__('3-train_generator').train_generator
 
 
 if __name__ == '__main__':
@@ -29,15 +31,8 @@ if __name__ == '__main__':
     D_real = discriminator(X)
     D_fake = discriminator(G_sample)
 
-    D_loss = -tf.reduce_mean(tf.log(D_real) + tf.log(1. - D_fake))
-    G_loss = -tf.reduce_mean(tf.log(D_fake))
-
-    # Optimizers
-    disc_vars = [var for var in tf.trainable_variables() if var.name.startswith("disc")]
-    gen_vars = [var for var in tf.trainable_variables() if var.name.startswith("gen")]
-
-    D_solver = tf.train.AdamOptimizer().minimize(D_loss, var_list=disc_vars)
-    G_solver = tf.train.AdamOptimizer().minimize(G_loss, var_list=gen_vars)
+    D_loss, D_solver = train_discriminator(Z, X)
+    G_loss, G_solver = train_generator(Z)
 
     mb_size = 128
 
