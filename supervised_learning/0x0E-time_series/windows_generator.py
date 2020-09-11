@@ -8,9 +8,20 @@ import matplotlib.pyplot as plt
 
 
 class WindowGenerator:
+    """Windows Generaator Class"""
     def __init__(self, input_width, label_width, shift,
                  train_df, val_df, test_df,
                  label_columns=None):
+        """
+
+        :param input_width:
+        :param label_width:
+        :param shift:
+        :param train_df:
+        :param val_df:
+        :param test_df:
+        :param label_columns:
+        """
         # Store the raw data.
         self.train_df = train_df
         self.val_df = val_df
@@ -41,6 +52,10 @@ class WindowGenerator:
             self.total_window_size)[self.labels_slice]
 
     def __repr__(self):
+        """
+
+        :return:
+        """
         return '\n'.join([
             f'Total window size: {self.total_window_size}',
             f'Input indices: {self.input_indices}',
@@ -48,6 +63,11 @@ class WindowGenerator:
             f'Label column name(s): {self.label_columns}'])
 
     def split_window(self, features):
+        """
+
+        :param features:
+        :return:
+        """
         inputs = features[:, self.input_slice, :]
         labels = features[:, self.labels_slice, :]
         if self.label_columns is not None:
@@ -64,6 +84,11 @@ class WindowGenerator:
         return inputs, labels
 
     def make_dataset(self, data):
+        """
+
+        :param data:
+        :return:
+        """
         data = np.array(data, dtype=np.float32)
         ds = K.preprocessing.timeseries_dataset_from_array(
             data=data,
@@ -79,14 +104,26 @@ class WindowGenerator:
 
     @property
     def train(self):
+        """
+
+        :return:
+        """
         return self.make_dataset(self.train_df)
 
     @property
     def val(self):
+        """
+
+        :return:
+        """
         return self.make_dataset(self.val_df)
 
     @property
     def test(self):
+        """
+
+        :return:
+        """
         return self.make_dataset(self.test_df)
 
     @property
@@ -101,6 +138,13 @@ class WindowGenerator:
         return result
 
     def plot(self, model=None, plot_col='Close', max_subplots=3):
+        """
+
+        :param model:
+        :param plot_col:
+        :param max_subplots:
+        :return:
+        """
         inputs, labels = self.example
         plt.figure(figsize=(12, 8))
         plot_col_index = self.column_indices[plot_col]
