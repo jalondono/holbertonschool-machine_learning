@@ -9,6 +9,14 @@ import tensorflow as tf
 
 
 def compile_and_fit(model, window, patience=2, Max_Epoch=20):
+    """
+
+    :param model:
+    :param window:
+    :param patience:
+    :param Max_Epoch:
+    :return:
+    """
     early_stopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss',
                                                       patience=patience,
                                                       mode='min')
@@ -23,6 +31,11 @@ def compile_and_fit(model, window, patience=2, Max_Epoch=20):
 
 
 def forecast(wide_window):
+    """
+
+    :param wide_window:
+    :return:
+    """
     lstm_model = tf.keras.models.Sequential([
         # Shape [batch, time, features] => [batch, time, lstm_units]
         tf.keras.layers.LSTM(32, return_sequences=True),
