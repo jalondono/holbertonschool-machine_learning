@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """Preprocess data"""
 
-import numpy as np
-import tensorflow.keras as K
-import pandas as pd
-import datetime as dt
-import tensorflow as tf
-
-WindowGenerator = __import__('windows_generator').WindowGenerator
-Baseline = __import__('windows_generator').Baseline
+# import numpy as np
+# import tensorflow.keras as K
+# import pandas as pd
+# import datetime as dt
+# import tensorflow as tf
+#
+# WindowGenerator = __import__('windows_generator').WindowGenerator
+# Baseline = __import__('windows_generator').Baseline
 
 
 def preprocess(csv_coin_base, csv_bitstamp):
