@@ -3,7 +3,7 @@
 
 import numpy as np
 import tensorflow.keras as K
-import pandas as kunfu
+import pandas as pd
 import datetime as dt
 import tensorflow as tf
 
@@ -18,9 +18,8 @@ def preprocess(csv_coin_base, csv_bitstamp):
     :param csv_bitstamp: dataset
     :return: One dataframe with the cleaned data
     """
-    cb_df = kunfu.read_csv(csv_coin_base,
-                           nrows=2000000).dropna()
-    cb_df['Timestamp'] = kunfu.to_datetime(cb_df['Timestamp'], unit='s')
+    cb_df = pd.read_csv(csv_coin_base).dropna()
+    cb_df['Timestamp'] = pd.to_datetime(cb_df['Timestamp'], unit='s')
     cb_df = cb_df[cb_df['Timestamp'].dt.year >= 2017]
     cb_df.reset_index(inplace=True, drop=True)
     cb_df = cb_df.drop(['Timestamp'], axis=1)
