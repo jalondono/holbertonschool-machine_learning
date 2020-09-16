@@ -7,7 +7,7 @@ def bag_of_words(sentences, vocab=None):
     """
     creates a bag of words embedding matrix:
     :param sentences: is a list of sentences to analyze
-    :param vocab: is a list of the vocabulary words to use for the analysis
+    :param vocab: is a list of the vocabulary word to use for the analysis
     :return: embeddings, features
     """
     vectorizer = CountVectorizer(vocabulary=vocab)

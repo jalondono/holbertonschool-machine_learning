@@ -7,7 +7,7 @@ def tf_idf(sentences, vocab=None):
     """
     creates a TF-IDF embedding:
     :param sentences: is a list of sentences to analyze
-    :param vocab: is a list of the vocabulary words to use for the analysis
+    :param vocab: is a list of the vcabulary words to use for the analysis
     :return: embeddings, features
     """
     vectorizer = TfidfVectorizer(vocabulary=vocab)

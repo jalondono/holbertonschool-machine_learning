@@ -20,7 +20,7 @@ def word2vec_model(sentences, size=100, min_count=5,
      True is for CBOW; False is for Skip-gram
     :param iterations: is the number of iterations to train over
     :param seed: is the seed for the random number generator
-    :param workers: is the number of worker threads to train the model
+    :param workers: is the number of wrker threads to train the model
     :return: the trained model
     """
     model = Word2Vec(sentences, size=size, window=window,
