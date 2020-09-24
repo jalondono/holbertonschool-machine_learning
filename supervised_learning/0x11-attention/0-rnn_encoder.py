@@ -25,7 +25,8 @@ class RNNEncoder(tf.keras.layers.Layer):
     def initialize_hidden_state(self):
         """
         Initializes the hidden states for the RNN cell to a tensor of zeros
-        :return: a tensor of shape (batch, units)containing the initialized hidden states
+        :return: a tensor of shape (batch, units)containing the initialized
+         hidden states
         """
         initializer = tf.keras.initializers.Zeros()
         values = initializer(shape=(self.batch, self.units))
