@@ -8,6 +8,7 @@ EncoderBlock = __import__('7-transformer_encoder_block').EncoderBlock
 
 
 class Encoder(tf.keras.layers.Layer):
+    """Encoder class"""
     def __init__(self, N, dm, h, hidden, input_vocab,
                  max_seq_len, drop_rate=0.1):
         """
