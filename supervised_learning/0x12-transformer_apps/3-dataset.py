@@ -6,15 +6,36 @@ import tensorflow as tf
 
 
 class Dataset:
-    def __init__(self):
+    def __init__(self, batch_size, max_len):
         """
         Constructor method
         """
+        BUFFER_SIZE = 20000
         examples, metadata = tfds.load('ted_hrlr_translate/pt_to_en', with_info=True,
                                        as_supervised=True)
         train_examples, val_examples = examples['train'], examples['validation']
+
+        def filter_max_length(x, y, max_length=max_len):
+            return tf.logical_and(tf.size(x) <= max_length,
+                                  tf.size(y) <= max_length)
+
+        self.max_len = max_len
+        self.batch_size = batch_size
+
         self.data_train = train_examples.map(self.tf_encode)
+        self.data_train = self.data_train.filter(filter_max_length)
+
+        self.data_train = self.data_train.cache()
+        padded_shapes = tf.data.get_output_shapes(self.data_train)
+        self.data_train = self.data_train.shuffle(BUFFER_SIZE).\
+            padded_batch(self.batch_size, padded_shapes=padded_shapes)
+        self.data_train = self.data_train.prefetch(tf.data.experimental.AUTOTUNE)
+
         self.data_valid = val_examples.map(self.tf_encode)
+        padded_shapes = tf.data.get_output_shapes(self.data_valid)
+        self.data_valid = self.data_valid.filter(filter_max_length).\
+            padded_batch(self.batch_size, padded_shapes=padded_shapes)
+
         self.tokenizer_pt, self.tokenizer_en = self.tokenize_dataset(train_examples)
 
     def tokenize_dataset(self, data):
