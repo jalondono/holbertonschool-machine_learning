@@ -7,16 +7,19 @@ import tensorflow_datasets as tfds
 
 class Dataset:
     """Class """
+
     def __init__(self):
         """
         Constructor method
         """
-        examples, metadata = tfds.load('ted_hrlr_translate/pt_to_en', with_info=True,
-                                       as_supervised=True)
-        train_examples, val_examples = examples['train'], examples['validation']
+        exam, metadata = tfds.load('ted_hrlr_translate/pt_to_en',
+                                   with_info=True,
+                                   as_supervised=True)
+        train_examples, val_examples = exam['train'], exam['validation']
         self.data_train = train_examples
         self.data_valid = val_examples
-        self.tokenizer_pt, self.tokenizer_en = self.tokenize_dataset(self.data_train)
+        self.tokenizer_pt, self.tokenizer_en = self.tokenize_dataset(
+            self.data_train)
 
     def tokenize_dataset(self, data):
         """
@@ -36,7 +39,8 @@ class Dataset:
         """
          encodes a translation into tokens:
         :param pt: is the tf.Tensor containing the Portuguese sentence
-        :param en: is the tf.Tensor containing the corresponding English sentence
+        :param en: is the tf.Tensor containing the corresponding
+        English sentence
         :return: pt_tokens, en_tokens
         """
         lang1 = [self.tokenizer_pt.vocab_size] + self.tokenizer_pt.encode(
