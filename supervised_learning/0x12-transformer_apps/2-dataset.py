@@ -6,6 +6,7 @@ import tensorflow_datasets as tfds
 
 
 class Dataset:
+    """ dataset class"""
     def __init__(self):
         """
         Constructor method

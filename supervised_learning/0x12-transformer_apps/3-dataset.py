@@ -6,6 +6,7 @@ import tensorflow as tf
 
 
 class Dataset:
+    """ dataset class"""
     def __init__(self, batch_size, max_len):
         """
         Constructor method
