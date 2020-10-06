@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Dataset class"""
 
+import tensorflow.compat.v2 as tf
 import tensorflow_datasets as tfds
-import tensorflow as tf
 
 
 class Dataset:
