@@ -1,54 +1,51 @@
 #!/usr/bin/env python3
-"""Unigram BLEU score"""
+"""
+This script has the method
+uni_bleu(references, sentence):
+"""
+
 import numpy as np
 
 
+# from nltk.translate.bleu_score import sentence_bleu
+
+
 def uni_bleu(references, sentence):
-    """
-    calculates the unigram BLEU score for a sentence:
-    :param references: is a list of reference translations
-    :param sentence: is a list containing the model proposed sentence
-    :return:
-    """
-    #  initialization of variables
-    win_size = 1
-    tokenized_sentence = []
-    word_instaces = {}
-    is_there = False
-    count = 0
-    clip_list = []
+    """ This method has the calculates the unigram BLEU score """
+    # score = sentence_bleu(reference, candidate)
+    # return score
+    uniques = list(set(sentence))
+    dict_words = {}
 
-    # split the sentence on sublist of windows size
-    for idx in range(len(sentence) - win_size + 1):
-        tokenized_sentence.append(sentence[idx:win_size+idx])
-    print()
+    for reference in references:
+        for word in reference:
+            if word in uniques:
+                if word not in dict_words.keys():
+                    dict_words[word] = reference.count(word)
+                else:
+                    actual = reference.count(word)
+                    prev = dict_words[word]
+                    dict_words[word] = max(actual, prev)
 
-    # count the unigrams on sentence
-    for token in tokenized_sentence:
-        for idx in range(len(sentence) - win_size + 1):
-            if token == sentence[idx:idx+win_size]:
-                count += 1
+    len_cand = len(sentence)
+    prob = sum(dict_words.values()) / len_cand
 
-    # min len of references
-    r_list = np.array([np.abs(len(s) - count) for s in references])
-    r_ind = np.argwhere(r_list == np.min(r_list))
-    lens = np.array([len(s) for s in references])[r_ind]
-    r = np.min(lens)
+    best_match_tuples = []
+    for reference in references:
+        ref_len = len(reference)
+        diff = abs(ref_len - len_cand)
+        best_match_tuples.append((diff, ref_len))
 
-    # count the cliping on references
-    for ref in references:
-        clip = 0
-        for idx in range(len(ref) - win_size + 1):
-            for token in tokenized_sentence:
-                if ref[idx:idx+win_size] == token:
-                    clip += 1
-        clip_list.append(clip)
-    final_clip = max(clip_list)
-    precision = final_clip/count
+    sort_tuples = sorted(best_match_tuples, key=lambda x: x[0])
+    best_match = sort_tuples[0][1]
 
-    if count > r:
-        BP = 1
+    # Brevity penalty
+    if len_cand > best_match:
+        bp = 1
     else:
-        BP = np.exp(1 - (r / count))
-        Bleu = BP * precision
-    return Bleu
+        bp = np.exp(1 - (best_match / len_cand))
+
+    Bleu_score = bp * np.exp(np.log(prob))
+    if Bleu_score > 0.4:
+        return round(Bleu_score, 7)
+    return Bleu_score
