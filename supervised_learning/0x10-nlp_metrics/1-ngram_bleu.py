@@ -1,48 +1,81 @@
 #!/usr/bin/env python3
-"""Unigram BLEU score"""
+"""
+This script has the method
+ngram_bleu(references, sentence, n):
+"""
+
 import numpy as np
+
+
+def grams(sentence, n):
+    """
+    getting grams
+    """
+    new = []
+    ln = len(sentence)
+    for i, word in enumerate(sentence):
+        s = word
+        counter = 0
+        j = 1
+        for j in range(1, n):
+            if ln > i + j:
+                s += " " + sentence[i + j]
+                counter += 1
+        if counter == j:
+            new.append(s)
+    return new
+
+
+def transform_grams(references, sentence, n):
+    """
+    transform grams
+    """
+    if n == 1:
+        return references, sentence
+    new_sentence = grams(sentence, n)
+    new_ref = []
+    for ref in references:
+        new_r = grams(ref, n)
+        new_ref.append(new_r)
+
+    return new_ref, new_sentence
+
+
+def calc_precision(references, sentence, n):
+    """
+    return precision
+    """
+    references, sentence = transform_grams(references, sentence, n)
+    sentence_dict = {x: sentence.count(x) for x in sentence}
+    references_dict = {}
+    for ref in references:
+        for gram in ref:
+            if gram not in references_dict.keys() \
+                    or references_dict[gram] < ref.count(gram):
+                references_dict[gram] = ref.count(gram)
+
+    appearances = {x: 0 for x in sentence}
+    for ref in references:
+        for gram in appearances.keys():
+            if gram in ref:
+                appearances[gram] = sentence_dict[gram]
+
+    for gram in appearances.keys():
+        if gram in references_dict.keys():
+            appearances[gram] = min(references_dict[gram], appearances[gram])
+
+    len_trans = len(sentence)
+    precision = sum(appearances.values()) / len_trans
+
+    return precision
 
 
 def ngram_bleu(references, sentence, n):
     """
-    calculates the n-gram BLEU score for a sentence:
-    :param references: is a list of reference translations
-    :param sentence: is a list containing the model proposed sentence
-    :return:
+    This method has the calculates the unigram BLEU score
     """
-    #  initialization of variables
-    win_size = n
-    tokenized_sentence = []
-    word_instaces = {}
-    is_there = False
-    count = 0
-    clip_list = []
-
-    # split the sentence on sublist of windows size
-    for idx in range(len(sentence) - win_size + 1):
-        tokenized_sentence.append(sentence[idx:win_size + idx])
-
-    # count the unigrams on sentence
-    for token in tokenized_sentence:
-        for idx in range(len(sentence) - win_size + 1):
-            if token == sentence[idx:idx + win_size]:
-                count += 1
-
-    # count the cliping on references
-    for ref in references:
-        clip = 0
-        for idx in range(len(ref) - win_size + 1):
-            for token in tokenized_sentence:
-                if ref[idx:idx + win_size] == token:
-                    clip += 1
-        clip_list.append(clip)
-    final_clip = max(clip_list)
-    precision = final_clip / count
-
+    precision = calc_precision(references, sentence, n)
     len_trans = len(sentence)
-
-    # Brevity penalty
-    # closest reference length from translation length
     closest_ref_idx = np.argmin([abs(len(x) - len_trans) for x in references])
     reference_length = len(references[closest_ref_idx])
 
