@@ -4,10 +4,12 @@ import requests
 
 
 if __name__ == '__main__':
+
     url = "https://api.spacexdata.com/v4/launches"
     r = requests.get(url)
     launches = r.json()
     rocket_dict = {}
+
     for i, launch in enumerate(launches):
         rocket_id = launch["rocket"]
         rocket_url = "https://api.spacexdata.com/v4/rockets/{}".format(
